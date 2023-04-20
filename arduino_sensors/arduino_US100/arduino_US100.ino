@@ -7,7 +7,7 @@
 #include <SoftwareSerial.h>
 
 
-SoftwareSerial us100(2, 3);
+SoftwareSerial us100(3, 2);
 
 unsigned int high_byte = 0;
 unsigned int low_byte  = 0;
@@ -23,7 +23,7 @@ void loop() {
   us100.flush();
   // trigs distance measurement on the US-100 to begin
   us100.write(0X55);
-  delay(500);  
+  delay(200);  
   
   // check receive 2 bytes correctly                       
   if (us100.available() >= 2) 
@@ -32,10 +32,9 @@ void loop() {
     low_byte  = us100.read();
     
     // distance calculation
-    distance  = (high_byte * 256 + low_byte);
+    distance  = high_byte * 256 + low_byte;
     Serial.print("Distance: ");
     Serial.print(distance, DEC);          
     Serial.println("mm");        
-  }
-  delay(500);                                    
+  }                                     
 } 
