@@ -1,160 +1,50 @@
-
-import threading
 import grpc
+import random
+import time
+import threading
 
-import chat_pb2 as chat
-import chat_pb2_grpc as rpc
+import scheduler_pb2
+import scheduler_pb2_grpc
 
-address = 'localhost'
-port = 11912
+class TrainClient:
+    def __init__(self, train_id, server_address='localhost:50051'):
+        self.train_id = train_id
+        self.channel = grpc.insecure_channel(server_address)
+        self.scheduler_stub = scheduler_pb2_grpc.SchedulerStub(self.channel)
 
+    def get_status(self):
+        request = scheduler_pb2.TrainStatusRequest(train_id=self.train_id)
+        response = self.scheduler_stub.GetTrainStatus(request)
+        return response
 
-class Client:
+    def update_status(self, location, speed):
+        request = scheduler_pb2.TrainUpdateRequest(train_id=self.train_id, location=location, speed=speed)
+        response = self.scheduler_stub.UpdateTrainStatus(request)
+        return response.success
 
-    def __init__(self):
-        # create a gRPC channel + stub
-        self.username = None
-        channel = grpc.insecure_channel(address + ':' + str(port))
-        self.conn = rpc.ChatServerStub(channel)
+    def run(self):
+        print(f'Train {self.train_id} started...')
 
-    # thread creation separate from instantiation. called when username set.
-    def thread(self):
-        if self.username is not None:
-            # create new listening thread for when new message streams come in
-            threading.Thread(target=self.__listen_for_messages, daemon=True).start()
+        while True:
+            # Simulate train movement and speed updates
+            location = random.uniform(0, 100)  # Replace with actual location calculation
+            speed = random.uniform(40, 100)    # Replace with actual speed calculation
 
-    def __listen_for_messages(self):
-        """
-        This method will be ran in a separate thread as the main/ui thread, because the for-in call is blocking
-        when waiting for new messages
-        """
-        if self.username is not None:
-            # request message provides username
-            n = chat.ConnectRequest()
-            n.recipient = self.username
-            # continuously  wait for new messages from the server!
-            for connectReply in self.conn.ChatStream(n):  
-                # active boolean checks to see if this is a disconnect request
-                if connectReply.active:
-                    # if normal active user message, we display it in chat
-                    print("R[{}] {}".format(connectReply.sender, connectReply.message)) 
-                else: # if disconnect request, then need to return to terminate thread
-                    return
+            # Update train status in Scheduler API
+            update_success = self.update_status(location, speed)
+            if not update_success:
+                print(f'Error updating train {self.train_id} status.')
 
-    def send_message(self, message, recipient):
-        """
-        This method is called when user enters something into the textbox
-        """
-        if recipient != '' and message != '':
-            # construct message request
-            n = chat.MessageRequest() 
-            n.sender = self.username  
-            n.recipient = recipient 
-            n.message = message
-            reply = self.conn.SendMessage(n)  # send to the server
-            return reply
-        else:
-            print("Please enter a recipient and a message.")
+            # Get train status from Scheduler API
+            train_status = self.get_status()
+            print(f'Train {self.train_id} status: location={train_status.location}, speed={train_status.speed}, distance_to_stop={train_status.distance_to_stop}')
 
-    def signup(self, username):
-        if username != '':
-            n = chat.SignupRequest() 
-            n.username = username
-            reply = self.conn.Signup(n)
-            if reply.success:
-                self.username = n.username
-            return reply
-
-    def login(self, username):
-        if username != '':
-            n = chat.LoginRequest() 
-            n.username = username
-            reply = self.conn.Login(n)
-            if reply.success:
-                self.username = n.username
-            return reply
-
-    def logout(self):
-        n = chat.LogoutRequest()
-        n.username = self.username
-        reply = self.conn.Logout(n)
-        if reply.success:
-            self.username = None
-        return reply
-
-    def list(self, query):
-        n = chat.ListRequest()
-        n.query = query
-        reply = self.conn.List(n)
-        return reply
-
-
-    def delete(self):
-        n = chat.DeleteRequest()
-        n.username = self.username
-        temp = self.logout()
-        reply = self.conn.Delete(n)
-        return reply
-
+            time.sleep(5)  # Wait for some time before next update
 
 if __name__ == '__main__':
-    c = Client()
-    try:        
-        while c.username is None:
-            req = input("Enter 1|{Username} to sign up or 2|{Username} to log in: ")
-            if req[0:2] == "1|":
-                reply = c.signup(req[2:])
-                if reply.success:
-                    print("Signup successful!")
-                else:
-                    print("{}".format(reply.error))
-            elif req[0:2] == "2|":
-                reply = c.login(req[2:])
-                if reply.success:
-                    print("Login successful!")
-                else:
-                    print("{}".format(reply.error))
-            else:
-                print("Invalid input.")
-            # username set, can now start thread and take commands
-            # if c.username is not None:
-            c.thread()
-            print("Commands: \send, \logout, \list, \delete.")
-            while c.username is not None:
-                request = input('')
-                if request == "\logout":
-                    reply = c.logout()
-                    if reply.success:
-                        print("Logout successful!")
-                elif request == "\list":
-                    query = input("Query: ")
-                    reply = c.list(query)
-                    if reply.success:
-                        for user in reply.users:
-                            print(user)
-                    else:
-                        print("{}".format(reply.error))
-                elif request == "\send":
-                    recipient = input("Recipient: ")
-                    message = input("Message: ")
-                    reply = c.send_message(message, recipient)
-                    if reply is not None:
-                        if reply.success:
-                            print("S[{}] {}".format(recipient, message)) 
-                        else:
-                            print("{}".format(reply.error))
-                elif request == "\delete":
-                    confirm = input("Are you sure you want to delete your account? [y]: ")
-                    if confirm == "y":
-                        reply = c.delete()
-                        if reply.success:
-                            print("Account deleted.")
-                        else:
-                            print("{}".format(reply.error))
-                    else:
-                        print("Account deletion cancelled.")
-                else:
-                    print("Please enter a valid command.")
-    except KeyboardInterrupt: # catch the ctrl+c keyboard interrupt
-        if c.username is not None:
-            temp = c.logout()
+    train_id = 1
+    train_client = TrainClient(train_id)
+    
+    train_thread = threading.Thread(target=train_client.run)
+    train_thread.start()
+    train_thread.join()

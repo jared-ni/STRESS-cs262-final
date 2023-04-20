@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+service Scheduler {
+  rpc GetTrainStatus (TrainStatusRequest) returns (TrainStatusResponse) {}
+  rpc UpdateTrainStatus (TrainUpdateRequest) returns (TrainUpdateResponse) {}
+}
+
+message TrainStatusRequest {
+  int32 train_id = 1;
+}
+
+message TrainStatusResponse {
+  int32 train_id = 1;
+  double location = 2;
+  double speed = 3;
+  double distance_to_stop = 4;
+}
+
+message TrainUpdateRequest {
+  int32 train_id = 1;
+  double location = 2;
+  double speed = 3;
+}
+
+message TrainUpdateResponse {
+  bool success = 1;
+}
