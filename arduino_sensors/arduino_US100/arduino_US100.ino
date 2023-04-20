@@ -7,7 +7,7 @@
 #include <SoftwareSerial.h>
 
 
-SoftwareSerial us100(3, 2);
+SoftwareSerial us100(10, 9);
 
 unsigned int high_byte = 0;
 unsigned int low_byte  = 0;
