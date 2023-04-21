@@ -29,23 +29,27 @@ void setup() {
 void loop() {
    // if sensorValue == 1 (HIGH) if detect motion
   int sensorValue = digitalRead(SENSOR_PIN);
-  Serial.print("PIR: ");
-  Serial.println(sensorValue);
+//  Serial.print("PIR: ");
+//  Serial.println(sensorValue);
 
   
   // Clears the trigPin
   digitalWrite(trigPin, LOW);
   // Sets the trigPin on HIGH state for 10 micro seconds
   digitalWrite(trigPin, HIGH);
-  delay(200);
   digitalWrite(trigPin, LOW);
   // Reads the echoPin, returns the sound wave travel time in microseconds
   duration = pulseIn(echoPin, HIGH);
   // Calculating the distance
   distance = duration * 0.034 / 2;
   // Prints the distance on the Serial Monitor
-  Serial.print("Distance: ");
-  Serial.print(distance);
-  Serial.println(" cm");
-  
+//  Serial.print("Distance: ");
+//  Serial.print(distance);
+//  Serial.println(" cm");
+
+  // reads (whetherDetectMotion, distance)
+  Serial.print(sensorValue);
+  Serial.print(" ");
+  Serial.println(distance);
+  delay(200);
 }
