@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x12\x61larm_sensor.proto\"\x07\n\x05\x45mpty\"1\n\x04\x44\x61ta\x12\x10\n\x08pir_data\x18\x01 \x01(\x05\x12\x17\n\x0fultrasonic_data\x18\x02 \x01(\x05\x32*\n\x0b\x41larmSensor\x12\x1b\n\x08SendData\x12\x05.Data\x1a\x06.Empty\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x12\x61larm_sensor.proto\"\x07\n\x05\x45mpty\"=\n\x04\x44\x61ta\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x10\n\x08pir_data\x18\x02 \x01(\x05\x12\x17\n\x0fultrasonic_data\x18\x03 \x01(\x05\x32*\n\x0b\x41larmSensor\x12\x1b\n\x08SendData\x12\x05.Data\x1a\x06.Empty\"\x00\x62\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'alarm_sensor_pb2', globals())
@@ -23,7 +23,7 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _EMPTY._serialized_start=22
   _EMPTY._serialized_end=29
   _DATA._serialized_start=31
-  _DATA._serialized_end=80
-  _ALARMSENSOR._serialized_start=82
-  _ALARMSENSOR._serialized_end=124
+  _DATA._serialized_end=92
+  _ALARMSENSOR._serialized_start=94
+  _ALARMSENSOR._serialized_end=136
 # @@protoc_insertion_point(module_scope)
