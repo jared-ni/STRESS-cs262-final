@@ -27,8 +27,8 @@ class AlarmSensorClient:
             ultrasonic = line[0]; pir = line[1]
             if int(ultrasonic) <= 50 and int(pir) == 1:
                 self.send_message(self.sensor_id, "FIRE THE ALARMS") 
-                playsound('/untitled.wav')
-                break     
+                playsound('untitled.wav')
+
             
 
 if __name__ == '__main__':
