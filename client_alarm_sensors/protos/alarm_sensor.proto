@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+package grpc;
+
 service AlarmSensor {
   rpc SendData (Data) returns (Empty) {}
 }
@@ -8,8 +10,6 @@ message Empty {}
 
 message Data {
   int32 id = 1;
-  int32 pir_data = 2;
-  int32 ultrasonic_data = 3;
-  // Hard location of PIR sensor
-  // Hard location of US sensor
+  string data = 2;
 }
+
