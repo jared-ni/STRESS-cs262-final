@@ -12,25 +12,25 @@ class AlarmSensorClient:
         self.sensor_id = sensor_id
         self.channel = grpc.insecure_channel(server_address)
         self.alarm_sensor_stub = alarm_sensor_pb2_grpc.AlarmSensorStub(self.channel)
-        self.devices = [serial.Serial("/dev/tty.usbmodem101", 9600)]
+        self.device = serial.Serial("/dev/tty.usbmodem1101", 9600)
 
-    def send_data(self, sensor_id, data):
-        data = alarm_sensor_pb2.Data(id = sensor_id, data = data)
-        return data
+    def send_message(self, sensor_id, message):
+        return alarm_sensor_pb2.MessageRequest(id = sensor_id, message = message)
 
     def run(self):
         # print(f'Sending data')
-
         while True:
-            for device in self.devices:
-                line = device.readline().decode('utf-8').rstrip()
-                self.send_data(self.sensor_id, line)
-                print(line)
+            time.sleep(0.1)
+            line = self.device.readline().decode('utf-8').rstrip()
+            print(line); line = line.split("|"); 
+            ultrasonic = line[0]; pir = line[1]
+            if int(ultrasonic) <= 50 and int(pir) == 1:
+                self.send_message(self.sensor_id, "STOP") 
+                break     
+            
 
 if __name__ == '__main__':
-    id = 1
-    alarm_sensor_client = AlarmSensorClient(id)
-    
+    alarm_sensor_client = AlarmSensorClient(1)
     alarm_sensor_thread = threading.Thread(target=alarm_sensor_client.run)
     alarm_sensor_thread.start()
     alarm_sensor_thread.join()

@@ -16,7 +16,7 @@ class AlarmSensorStub(object):
         """
         self.SendData = channel.unary_unary(
                 '/grpc.AlarmSensor/SendData',
-                request_serializer=alarm__sensor__pb2.Data.SerializeToString,
+                request_serializer=alarm__sensor__pb2.MessageRequest.SerializeToString,
                 response_deserializer=alarm__sensor__pb2.Empty.FromString,
                 )
 
@@ -35,7 +35,7 @@ def add_AlarmSensorServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'SendData': grpc.unary_unary_rpc_method_handler(
                     servicer.SendData,
-                    request_deserializer=alarm__sensor__pb2.Data.FromString,
+                    request_deserializer=alarm__sensor__pb2.MessageRequest.FromString,
                     response_serializer=alarm__sensor__pb2.Empty.SerializeToString,
             ),
     }
@@ -60,7 +60,7 @@ class AlarmSensor(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/grpc.AlarmSensor/SendData',
-            alarm__sensor__pb2.Data.SerializeToString,
+            alarm__sensor__pb2.MessageRequest.SerializeToString,
             alarm__sensor__pb2.Empty.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

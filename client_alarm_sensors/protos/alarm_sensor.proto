@@ -3,13 +3,13 @@ syntax = "proto3";
 package grpc;
 
 service AlarmSensor {
-  rpc SendData (Data) returns (Empty) {}
+  rpc SendData (MessageRequest) returns (Empty) {}
 }
 
 message Empty {}
 
-message Data {
+message MessageRequest {
   int32 id = 1;
-  string data = 2;
+  string message = 2;
 }
 
