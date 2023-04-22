@@ -14,8 +14,8 @@ class AlarmSensorClient:
         self.alarm_sensor_stub = alarm_sensor_pb2_grpc.AlarmSensorStub(self.channel)
         self.devices = [serial.Serial("/dev/tty.usbmodem101", 9600)]
 
-    def send_data(self):
-        request = alarm_sensor_pb2_grpc.Data(train_id=self.train_id)
+    def send_data(self, sensor_id, pir_data, ultrasonic_data):
+        request = alarm_sensor_pb2_grpc.Data(id=sensor_id, pir_data=pir_data, ultrasonic_data=ultrasonic_data)
         response = self.alarm_sensor_stub.SendData(request)
         return response
 
