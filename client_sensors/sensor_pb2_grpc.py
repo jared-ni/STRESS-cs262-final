@@ -125,3 +125,97 @@ class WarningSensor(object):
             sensor__pb2.Empty.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+
+class SchedulerStub(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def __init__(self, channel):
+        """Constructor.
+
+        Args:
+            channel: A grpc.Channel.
+        """
+        self.GetTrainStatus = channel.unary_unary(
+                '/grpc.Scheduler/GetTrainStatus',
+                request_serializer=sensor__pb2.TrainStatusRequest.SerializeToString,
+                response_deserializer=sensor__pb2.TrainStatusResponse.FromString,
+                )
+        self.UpdateTrainStatus = channel.unary_unary(
+                '/grpc.Scheduler/UpdateTrainStatus',
+                request_serializer=sensor__pb2.TrainUpdateRequest.SerializeToString,
+                response_deserializer=sensor__pb2.TrainUpdateResponse.FromString,
+                )
+
+
+class SchedulerServicer(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def GetTrainStatus(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def UpdateTrainStatus(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+
+def add_SchedulerServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+            'GetTrainStatus': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetTrainStatus,
+                    request_deserializer=sensor__pb2.TrainStatusRequest.FromString,
+                    response_serializer=sensor__pb2.TrainStatusResponse.SerializeToString,
+            ),
+            'UpdateTrainStatus': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateTrainStatus,
+                    request_deserializer=sensor__pb2.TrainUpdateRequest.FromString,
+                    response_serializer=sensor__pb2.TrainUpdateResponse.SerializeToString,
+            ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+            'grpc.Scheduler', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
+
+
+ # This class is part of an EXPERIMENTAL API.
+class Scheduler(object):
+    """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def GetTrainStatus(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/grpc.Scheduler/GetTrainStatus',
+            sensor__pb2.TrainStatusRequest.SerializeToString,
+            sensor__pb2.TrainStatusResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def UpdateTrainStatus(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/grpc.Scheduler/UpdateTrainStatus',
+            sensor__pb2.TrainUpdateRequest.SerializeToString,
+            sensor__pb2.TrainUpdateResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

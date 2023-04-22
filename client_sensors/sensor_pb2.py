@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0csensor.proto\x12\x04grpc\"\x07\n\x05\x45mpty\"-\n\x0eMessageRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0f\n\x07message\x18\x02 \x01(\t2>\n\x0b\x41larmSensor\x12/\n\x08SendData\x12\x14.grpc.MessageRequest\x1a\x0b.grpc.Empty\"\x00\x32@\n\rWarningSensor\x12/\n\x08SendData\x12\x14.grpc.MessageRequest\x1a\x0b.grpc.Empty\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0csensor.proto\x12\x04grpc\"\x07\n\x05\x45mpty\"-\n\x0eMessageRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0f\n\x07message\x18\x02 \x01(\t\"&\n\x12TrainStatusRequest\x12\x10\n\x08train_id\x18\x01 \x01(\x05\"b\n\x13TrainStatusResponse\x12\x10\n\x08train_id\x18\x01 \x01(\x05\x12\x10\n\x08location\x18\x02 \x01(\x01\x12\r\n\x05speed\x18\x03 \x01(\x01\x12\x18\n\x10\x64istance_to_stop\x18\x04 \x01(\x01\"G\n\x12TrainUpdateRequest\x12\x10\n\x08train_id\x18\x01 \x01(\x05\x12\x10\n\x08location\x18\x02 \x01(\x01\x12\r\n\x05speed\x18\x03 \x01(\x01\"&\n\x13TrainUpdateResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x32>\n\x0b\x41larmSensor\x12/\n\x08SendData\x12\x14.grpc.MessageRequest\x1a\x0b.grpc.Empty\"\x00\x32@\n\rWarningSensor\x12/\n\x08SendData\x12\x14.grpc.MessageRequest\x1a\x0b.grpc.Empty\"\x00\x32\xa0\x01\n\tScheduler\x12G\n\x0eGetTrainStatus\x12\x18.grpc.TrainStatusRequest\x1a\x19.grpc.TrainStatusResponse\"\x00\x12J\n\x11UpdateTrainStatus\x12\x18.grpc.TrainUpdateRequest\x1a\x19.grpc.TrainUpdateResponse\"\x00\x62\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'sensor_pb2', globals())
@@ -24,8 +24,18 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _EMPTY._serialized_end=29
   _MESSAGEREQUEST._serialized_start=31
   _MESSAGEREQUEST._serialized_end=76
-  _ALARMSENSOR._serialized_start=78
-  _ALARMSENSOR._serialized_end=140
-  _WARNINGSENSOR._serialized_start=142
-  _WARNINGSENSOR._serialized_end=206
+  _TRAINSTATUSREQUEST._serialized_start=78
+  _TRAINSTATUSREQUEST._serialized_end=116
+  _TRAINSTATUSRESPONSE._serialized_start=118
+  _TRAINSTATUSRESPONSE._serialized_end=216
+  _TRAINUPDATEREQUEST._serialized_start=218
+  _TRAINUPDATEREQUEST._serialized_end=289
+  _TRAINUPDATERESPONSE._serialized_start=291
+  _TRAINUPDATERESPONSE._serialized_end=329
+  _ALARMSENSOR._serialized_start=331
+  _ALARMSENSOR._serialized_end=393
+  _WARNINGSENSOR._serialized_start=395
+  _WARNINGSENSOR._serialized_end=459
+  _SCHEDULER._serialized_start=462
+  _SCHEDULER._serialized_end=622
 # @@protoc_insertion_point(module_scope)
