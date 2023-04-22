@@ -20,7 +20,6 @@ message TrainStatusResponse {
   int32 train_id = 1;
   double location = 2;
   double speed = 3;
-  double distance_to_stop = 4;
 }
 
 message TrainUpdateRequest {

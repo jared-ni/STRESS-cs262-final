@@ -3,7 +3,6 @@
 # source: train.proto
 """Generated protocol buffer code."""
 from google.protobuf import descriptor as _descriptor
-from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
@@ -14,14 +13,226 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0btrain.proto\"&\n\x12TrainStatusRequest\x12\x10\n\x08train_id\x18\x01 \x01(\x05\"b\n\x13TrainStatusResponse\x12\x10\n\x08train_id\x18\x01 \x01(\x05\x12\x10\n\x08location\x18\x02 \x01(\x01\x12\r\n\x05speed\x18\x03 \x01(\x01\x12\x18\n\x10\x64istance_to_stop\x18\x04 \x01(\x01\"G\n\x12TrainUpdateRequest\x12\x10\n\x08train_id\x18\x01 \x01(\x05\x12\x10\n\x08location\x18\x02 \x01(\x01\x12\r\n\x05speed\x18\x03 \x01(\x01\"&\n\x13TrainUpdateResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x32\x8c\x01\n\tScheduler\x12=\n\x0eGetTrainStatus\x12\x13.TrainStatusRequest\x1a\x14.TrainStatusResponse\"\x00\x12@\n\x11UpdateTrainStatus\x12\x13.TrainUpdateRequest\x1a\x14.TrainUpdateResponse\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor.FileDescriptor(
+  name='train.proto',
+  package='',
+  syntax='proto3',
+  serialized_options=None,
+  create_key=_descriptor._internal_create_key,
+  serialized_pb=b'\n\x0btrain.proto\"N\n\x17OtherTrainStatusRequest\x12\x1b\n\x13requesting_train_id\x18\x01 \x01(\x05\x12\x16\n\x0eother_train_id\x18\x02 \x01(\x05\"&\n\x12TrainStatusRequest\x12\x10\n\x08train_id\x18\x01 \x01(\x05\"H\n\x13TrainStatusResponse\x12\x10\n\x08train_id\x18\x01 \x01(\x05\x12\x10\n\x08location\x18\x02 \x01(\x01\x12\r\n\x05speed\x18\x03 \x01(\x01\"G\n\x12TrainUpdateRequest\x12\x10\n\x08train_id\x18\x01 \x01(\x05\x12\x10\n\x08location\x18\x02 \x01(\x01\x12\r\n\x05speed\x18\x03 \x01(\x01\"&\n\x13TrainUpdateResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x32\xd5\x01\n\tScheduler\x12=\n\x0eGetTrainStatus\x12\x13.TrainStatusRequest\x1a\x14.TrainStatusResponse\"\x00\x12@\n\x11UpdateTrainStatus\x12\x13.TrainUpdateRequest\x1a\x14.TrainUpdateResponse\"\x00\x12G\n\x13GetOtherTrainStatus\x12\x18.OtherTrainStatusRequest\x1a\x14.TrainStatusResponse\"\x00\x62\x06proto3'
+)
 
 
 
-_TRAINSTATUSREQUEST = DESCRIPTOR.message_types_by_name['TrainStatusRequest']
-_TRAINSTATUSRESPONSE = DESCRIPTOR.message_types_by_name['TrainStatusResponse']
-_TRAINUPDATEREQUEST = DESCRIPTOR.message_types_by_name['TrainUpdateRequest']
-_TRAINUPDATERESPONSE = DESCRIPTOR.message_types_by_name['TrainUpdateResponse']
+
+_OTHERTRAINSTATUSREQUEST = _descriptor.Descriptor(
+  name='OtherTrainStatusRequest',
+  full_name='OtherTrainStatusRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='requesting_train_id', full_name='OtherTrainStatusRequest.requesting_train_id', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='other_train_id', full_name='OtherTrainStatusRequest.other_train_id', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=15,
+  serialized_end=93,
+)
+
+
+_TRAINSTATUSREQUEST = _descriptor.Descriptor(
+  name='TrainStatusRequest',
+  full_name='TrainStatusRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='train_id', full_name='TrainStatusRequest.train_id', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=95,
+  serialized_end=133,
+)
+
+
+_TRAINSTATUSRESPONSE = _descriptor.Descriptor(
+  name='TrainStatusResponse',
+  full_name='TrainStatusResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='train_id', full_name='TrainStatusResponse.train_id', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='location', full_name='TrainStatusResponse.location', index=1,
+      number=2, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='speed', full_name='TrainStatusResponse.speed', index=2,
+      number=3, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=135,
+  serialized_end=207,
+)
+
+
+_TRAINUPDATEREQUEST = _descriptor.Descriptor(
+  name='TrainUpdateRequest',
+  full_name='TrainUpdateRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='train_id', full_name='TrainUpdateRequest.train_id', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='location', full_name='TrainUpdateRequest.location', index=1,
+      number=2, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='speed', full_name='TrainUpdateRequest.speed', index=2,
+      number=3, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=209,
+  serialized_end=280,
+)
+
+
+_TRAINUPDATERESPONSE = _descriptor.Descriptor(
+  name='TrainUpdateResponse',
+  full_name='TrainUpdateResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='success', full_name='TrainUpdateResponse.success', index=0,
+      number=1, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=282,
+  serialized_end=320,
+)
+
+DESCRIPTOR.message_types_by_name['OtherTrainStatusRequest'] = _OTHERTRAINSTATUSREQUEST
+DESCRIPTOR.message_types_by_name['TrainStatusRequest'] = _TRAINSTATUSREQUEST
+DESCRIPTOR.message_types_by_name['TrainStatusResponse'] = _TRAINSTATUSRESPONSE
+DESCRIPTOR.message_types_by_name['TrainUpdateRequest'] = _TRAINUPDATEREQUEST
+DESCRIPTOR.message_types_by_name['TrainUpdateResponse'] = _TRAINUPDATERESPONSE
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
+
+OtherTrainStatusRequest = _reflection.GeneratedProtocolMessageType('OtherTrainStatusRequest', (_message.Message,), {
+  'DESCRIPTOR' : _OTHERTRAINSTATUSREQUEST,
+  '__module__' : 'train_pb2'
+  # @@protoc_insertion_point(class_scope:OtherTrainStatusRequest)
+  })
+_sym_db.RegisterMessage(OtherTrainStatusRequest)
+
 TrainStatusRequest = _reflection.GeneratedProtocolMessageType('TrainStatusRequest', (_message.Message,), {
   'DESCRIPTOR' : _TRAINSTATUSREQUEST,
   '__module__' : 'train_pb2'
@@ -50,18 +261,51 @@ TrainUpdateResponse = _reflection.GeneratedProtocolMessageType('TrainUpdateRespo
   })
 _sym_db.RegisterMessage(TrainUpdateResponse)
 
-_SCHEDULER = DESCRIPTOR.services_by_name['Scheduler']
-if _descriptor._USE_C_DESCRIPTORS == False:
 
-  DESCRIPTOR._options = None
-  _TRAINSTATUSREQUEST._serialized_start=15
-  _TRAINSTATUSREQUEST._serialized_end=53
-  _TRAINSTATUSRESPONSE._serialized_start=55
-  _TRAINSTATUSRESPONSE._serialized_end=153
-  _TRAINUPDATEREQUEST._serialized_start=155
-  _TRAINUPDATEREQUEST._serialized_end=226
-  _TRAINUPDATERESPONSE._serialized_start=228
-  _TRAINUPDATERESPONSE._serialized_end=266
-  _SCHEDULER._serialized_start=269
-  _SCHEDULER._serialized_end=409
+
+_SCHEDULER = _descriptor.ServiceDescriptor(
+  name='Scheduler',
+  full_name='Scheduler',
+  file=DESCRIPTOR,
+  index=0,
+  serialized_options=None,
+  create_key=_descriptor._internal_create_key,
+  serialized_start=323,
+  serialized_end=536,
+  methods=[
+  _descriptor.MethodDescriptor(
+    name='GetTrainStatus',
+    full_name='Scheduler.GetTrainStatus',
+    index=0,
+    containing_service=None,
+    input_type=_TRAINSTATUSREQUEST,
+    output_type=_TRAINSTATUSRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='UpdateTrainStatus',
+    full_name='Scheduler.UpdateTrainStatus',
+    index=1,
+    containing_service=None,
+    input_type=_TRAINUPDATEREQUEST,
+    output_type=_TRAINUPDATERESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetOtherTrainStatus',
+    full_name='Scheduler.GetOtherTrainStatus',
+    index=2,
+    containing_service=None,
+    input_type=_OTHERTRAINSTATUSREQUEST,
+    output_type=_TRAINSTATUSRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+])
+_sym_db.RegisterServiceDescriptor(_SCHEDULER)
+
+DESCRIPTOR.services_by_name['Scheduler'] = _SCHEDULER
+
 # @@protoc_insertion_point(module_scope)
