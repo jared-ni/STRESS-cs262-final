@@ -3,8 +3,10 @@ import random
 import time
 import threading
 
-import train_pb2
-import train_pb2_grpc
+import sys
+sys.path.append("client_sensors")
+import sensor_pb2
+import sensor_pb2_grpc
 
 MIN_SAFE_DIST = 10
 TRACK_LENGTH = 30
@@ -17,10 +19,10 @@ class TrainClient:
         self.location = STOP_POS
         self.speed = TRAIN_SPEED
         self.channel = grpc.insecure_channel(server_address)
-        self.scheduler_stub = train_pb2_grpc.SchedulerStub(self.channel)
+        self.scheduler_stub = sensor_pb2_grpc.SchedulerStub(self.channel)
 
     def get_status(self):
-        request = train_pb2.TrainStatusRequest(train_id=self.train_id)
+        request = sensor_pb2.TrainStatusRequest(train_id=self.train_id)
         response = self.scheduler_stub.GetTrainStatus(request)
         return response
 
@@ -29,7 +31,7 @@ class TrainClient:
         if self.location == STOP_POS % TRACK_LENGTH:
             print("Train {self.train_id} is at the train stop")
 
-        request = train_pb2.TrainUpdateRequest(
+        request = sensor_pb2.TrainUpdateRequest(
             train_id=self.train_id, 
             location=self.location, 
             speed=self.speed
@@ -59,7 +61,7 @@ class TrainClient:
         return True
     
     def get_other_train_status(self, other_train_id):
-        request = train_pb2.OtherTrainStatusRequest(
+        request = sensor_pb2.OtherTrainStatusRequest(
             requesting_train_id=self.train_id, 
             other_train_id=other_train_id
         )
