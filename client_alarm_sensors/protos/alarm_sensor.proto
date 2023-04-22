@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+service AlarmSensor {
+  rpc SendData (Data) returns (Empty) {}
+}
+
+message Empty {}
+
+message Data {
+  int32 pir_data = 1;
+  int32 ultrasonic_data = 2;
+  // Hard location of PIR sensor
+  // Hard location of US sensor
+}
