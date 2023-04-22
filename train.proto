@@ -3,6 +3,13 @@ syntax = "proto3";
 service Scheduler {
   rpc GetTrainStatus (TrainStatusRequest) returns (TrainStatusResponse) {}
   rpc UpdateTrainStatus (TrainUpdateRequest) returns (TrainUpdateResponse) {}
+  rpc GetOtherTrainStatus (OtherTrainStatusRequest) returns (TrainStatusResponse) {}
+
+}
+
+message OtherTrainStatusRequest {
+  int32 requesting_train_id = 1;
+  int32 other_train_id = 2;
 }
 
 message TrainStatusRequest {
