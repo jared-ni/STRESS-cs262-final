@@ -3,6 +3,7 @@ import random
 import time
 import threading
 import serial
+from playsound import playsound
 
 import sensor_pb2
 import sensor_pb2_grpc
@@ -26,6 +27,7 @@ class AlarmSensorClient:
             ultrasonic = line[0]; pir = line[1]
             if int(ultrasonic) <= 50 and int(pir) == 1:
                 self.send_message(self.sensor_id, "FIRE THE ALARMS") 
+                playsound('/untitled.wav')
                 break     
             
 
