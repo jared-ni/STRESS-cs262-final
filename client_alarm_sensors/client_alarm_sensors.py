@@ -25,7 +25,7 @@ class AlarmSensorClient:
         while True:
             for device in self.devices:
                 line = device.readline().decode('utf-8').rstrip()
-                self.send_data(line)
+                self.send_data(self.sensor_id, line[0], line[1])
 
 if __name__ == '__main__':
     id = 1
