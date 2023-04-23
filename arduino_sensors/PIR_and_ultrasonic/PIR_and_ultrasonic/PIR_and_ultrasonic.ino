@@ -65,7 +65,7 @@ void loop() {
 
   // reads (whetherDetectMotion, distance)
   Serial.print(sensorValue);
-  Serial.print(" ");
+  Serial.print("|");
   Serial.println(distance);
 
   if (sensorValue == 1 && distance < 100)
@@ -105,6 +105,7 @@ void loop() {
   } 
   else if (sensorValue == 1) 
   {
+    digitalWrite(LED_10, LOW);
     digitalWrite(LED_2, LOW);
     digitalWrite(LED_3, LOW);
     digitalWrite(LED_4, LOW);
