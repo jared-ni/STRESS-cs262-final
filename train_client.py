@@ -47,7 +47,6 @@ class TrainClient:
         return response
 
     def update_status(self):
-        print("in update_status")
         self.location = (self.location + self.speed * UPDATE_RATE) % TRACK_LENGTH
         if self.location == STOP_POS % TRACK_LENGTH:
             print("Train {self.train_id} is at the train stop")
@@ -57,7 +56,6 @@ class TrainClient:
             location=self.location, 
             speed=self.speed
         )
-        print("before updateTrainStatus")
         try: 
             response = self.conn.UpdateTrainStatus(request)
             print("response.success = ", response.success)
@@ -112,7 +110,6 @@ class TrainClient:
         print(f'Train {self.train_id} started...')
 
         while True:
-            print("in run")
             # Update train status in Scheduler API
             # try:
             update_success = self.update_status()
