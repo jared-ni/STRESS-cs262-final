@@ -1,4 +1,4 @@
-#define SENSOR_PIN 2
+#define SENSOR_PIN 8
 
 
 void setup() {
