@@ -4,9 +4,9 @@ import time
 import threading
 
 import sys
-sys.path.append("client_sensors")
+# sys.path.append("client_sensors")
 import sensor_pb2
-import sensor_pb2_grpc
+import sensor_pb2_grpc as rpc
 
 MIN_SAFE_DIST = 10
 TRACK_LENGTH = 30
@@ -20,16 +20,20 @@ class TrainClient:
         self.location = STOP_POS
         self.speed = TRAIN_SPEED
         self.channel = grpc.insecure_channel(server_address)
-        self.server_stub = sensor_pb2_grpc.ServerStub(self.channel)
+        self.conn = rpc.ServerStub(self.channel)
 
         # does this need to be stored
         threading.Thread(target=self.__listen_for_alarms, daemon=True).start()
+
+        train_thread = threading.Thread(target=self.run)
+        train_thread.start()
+        train_thread.join()
 
     def __listen_for_alarms(self):
         n = sensor_pb2.TrainConnectRequest()
         n.train_id = self.train_id
         # continuously  wait for new messages from the server!
-        for connectReply in self.server_stub.TrainSensorStream(n):  
+        for connectReply in self.conn.TrainSensorStream(n):  
             # if alarm, not warning
             if connectReply.alarm:
                 # display alarm message
@@ -39,10 +43,11 @@ class TrainClient:
 
     def get_status(self):
         request = sensor_pb2.TrainStatusRequest(train_id=self.train_id)
-        response = self.server_stub.GetTrainStatus(request)
+        response = self.conn.GetTrainStatus(request)
         return response
 
     def update_status(self):
+        print("in update_status")
         self.location = (self.location + self.speed * UPDATE_RATE) % TRACK_LENGTH
         if self.location == STOP_POS % TRACK_LENGTH:
             print("Train {self.train_id} is at the train stop")
@@ -52,8 +57,19 @@ class TrainClient:
             location=self.location, 
             speed=self.speed
         )
-        response = self.server_stub.UpdateTrainStatus(request)
-        return response.success
+        print("before updateTrainStatus")
+        try: 
+            response = self.conn.UpdateTrainStatus(request)
+            print("response.success = ", response.success)
+            return response.success
+        except grpc.RpcError as rpc_error:
+            if rpc_error.code() == grpc.StatusCode.CANCELLED:
+                pass
+            elif rpc_error.code() == grpc.StatusCode.UNAVAILABLE:
+                pass
+            else:
+                print(f"Received unknown RPC error: code={rpc_error.code()} message={rpc_error.details()}")
+        
     
     
     def is_safe_to_instantiate(self):
@@ -81,7 +97,7 @@ class TrainClient:
             requesting_train_id=self.train_id, 
             other_train_id=other_train_id
         )
-        response = self.server_stub.GetOtherTrainStatus(request)
+        response = self.conn.GetOtherTrainStatus(request)
         return response
 
 
@@ -96,7 +112,9 @@ class TrainClient:
         print(f'Train {self.train_id} started...')
 
         while True:
+            print("in run")
             # Update train status in Scheduler API
+            # try:
             update_success = self.update_status()
             if not update_success:
                 print(f'Error updating train {self.train_id} status.')
@@ -107,6 +125,14 @@ class TrainClient:
 
             time.sleep(UPDATE_RATE)  # Wait for some time before next update
 
+            # except grpc.RpcError as rpc_error:
+            #     if rpc_error.code() == grpc.StatusCode.CANCELLED:
+            #         pass
+            #     elif rpc_error.code() == grpc.StatusCode.UNAVAILABLE:
+            #         pass
+            #     else:
+            #         print(f"Received unknown RPC error: code={rpc_error.code()} message={rpc_error.details()}")
+            
 if __name__ == '__main__':
     train_id = int(input("Enter train ID (1, 2, or 3) to instantiate a train or 0 to exit: "))
     
@@ -115,8 +141,6 @@ if __name__ == '__main__':
     elif train_id in [1, 2, 3]:
         train_client = TrainClient(train_id)
         
-        train_thread = threading.Thread(target=train_client.run)
-        train_thread.start()
-        train_thread.join()
+        
     else:
         print("Invalid train ID. Please enter 1, 2, or 3.")
