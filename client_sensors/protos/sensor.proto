@@ -1,5 +1,22 @@
 syntax = "proto3";
 
+package grpc;
+
+// service AlarmSensor {
+//   rpc SendData (MessageRequest) returns (Empty) {}
+// }
+
+// service WarningSensor {
+//   rpc SendData (MessageRequest) returns (Empty) {}
+// }
+
+// message Empty {}
+
+// message MessageRequest {
+//   int32 id = 1;
+//   string message = 2;
+// }
+
 service Server {
   rpc GetTrainStatus (TrainStatusRequest) returns (TrainStatusResponse) {}
   rpc UpdateTrainStatus (TrainUpdateRequest) returns (TrainUpdateResponse) {}

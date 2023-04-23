@@ -3,7 +3,7 @@ from concurrent import futures
 import time
 
 import sys
-sys.path.append("client_sensors")
+# sys.path.append("client_sensors")
 import sensor_pb2
 import sensor_pb2_grpc
 
@@ -49,7 +49,7 @@ class Server(sensor_pb2_grpc.ServerServicer):
     
     # The stream which will be used to send new messages to clients
     # TO DO
-    def AlarmStream(self, request: sensor_pb2.TrainConnectRequest, context):
+    def TrainSensorStream(self, request, context):
         """
         This is a response-stream type call. This means the server can keep sending messages
         Every client opens this connection and waits for server to send new messages
