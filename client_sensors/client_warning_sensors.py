@@ -23,14 +23,19 @@ class WarningSensorClient:
 
     def run(self):
         print(f'Sending data')
+        reading = False
         # self.send_message(self.sensor_id, "REGISTER")
         while True:
-            time.sleep(0.1)
-            ultrasonic = self.device.readline().decode('utf-8').rstrip()
-            if int(ultrasonic) <= 50:
+            time.sleep(1)
+            pir = int(self.device.readline().decode('utf-8').rstrip())
+            if pir == 1 and not reading:
+                reading = True
                 self.send_message(self.sensor_id, True, "WARNING")
-                playsound('/untitled.wav')
-                break
+                playsound('untitled.wav')
+            elif pir == 0 and reading:
+                reading = False
+                
+                # break
             
 
 if __name__ == '__main__':

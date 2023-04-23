@@ -23,16 +23,19 @@ class AlarmSensorClient:
     def run(self):
         print(f'Sending data')
         # self.send_message(self.sensor_id, "REGISTER")
+        reading = False
         while True:
             time.sleep(0.1)
             line = self.device.readline().decode('utf-8').rstrip()
             print(line); line = line.split("|"); 
-            ultrasonic = line[0]; pir = line[1]
-            if int(ultrasonic) <= 50 and int(pir) == 1:
+            pir, ultrasonic = int(line[0]), int(line[1])
+            if pir == 1 and ultrasonic <= 100 and not reading:
+                reading = True
                 self.send_message(self.sensor_id, True, "FIRE THE ALARMS") 
                 playsound('someonefellin.wav')
-                break     
-            
+            elif int(pir) == 0 and reading:
+                reading = False
+
 
 if __name__ == '__main__':
     alarm_sensor_client = AlarmSensorClient(1)
