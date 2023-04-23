@@ -1,9 +1,10 @@
 import grpc
 from concurrent import futures
 import time
+import queue
 
 import sys
-sys.path.append("client_sensors")
+# sys.path.append("client_sensors")
 import sensor_pb2
 import sensor_pb2_grpc
 
@@ -23,7 +24,7 @@ class Server(sensor_pb2_grpc.ServerServicer):
         if train_id not in self.trains:
             context.abort(grpc.StatusCode.NOT_FOUND, f'Train {train_id} not found')
         
-        train_status = self.trains["status"][train_id]
+        train_status = self.trains[train_id]["status"]
         return train_status
 
     def UpdateTrainStatus(self, request, context):
@@ -32,7 +33,7 @@ class Server(sensor_pb2_grpc.ServerServicer):
         # check if train at stop
         self.train_at_stop = (request.location == STOP_POS % TRACK_LENGTH)
 
-        self.trains["status"][train_id] = sensor_pb2.TrainStatusResponse(
+        self.trains[train_id]["status"] = sensor_pb2.TrainStatusResponse(
             train_id=train_id,
             location=request.location,
             speed=request.speed,
@@ -44,12 +45,12 @@ class Server(sensor_pb2_grpc.ServerServicer):
         if other_train_id not in self.trains:
             return sensor_pb2.TrainStatusResponse(train_id=-1)  # Return "not found" status
 
-        train_status = self.trains["status"][other_train_id]
+        train_status = self.trains[other_train_id]["status"]
         return train_status
     
     # The stream which will be used to send new messages to clients
     # TO DO
-    def AlarmStream(self, request: sensor_pb2.TrainConnectRequest, context):
+    def TrainSensorStream(self, request, context):
         """
         This is a response-stream type call. This means the server can keep sending messages
         Every client opens this connection and waits for server to send new messages
@@ -58,6 +59,7 @@ class Server(sensor_pb2_grpc.ServerServicer):
         :return:
         """
         train_id = request.train_id
+        self.trains[train_id] = {"status": None, "queue": queue.SimpleQueue()}
         # infinite loop starts for each client
         while True:
             # Check if recipient is active, if they have queued messages
@@ -76,7 +78,7 @@ class Server(sensor_pb2_grpc.ServerServicer):
             if not self.train_at_stop:
                 # tell all trains to stop 
                 for train_id in self.trains.keys():
-                    forward = sensor_pb2.ConnectReply()
+                    forward = sensor_pb2.TrainConnectReply()
                     forward.train_id = train_id
                     forward.alarm = alarm_bool
                     forward.message = message
