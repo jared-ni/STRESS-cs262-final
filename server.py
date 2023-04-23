@@ -95,20 +95,20 @@ class Server(sensor_pb2_grpc.ServerServicer):
     
  
 
-class Server(sensor_pb2_grpc.AlarmSensorServicer):
-    def __init__(self):
-        self.sensors = {}
+# class Server(sensor_pb2_grpc.AlarmSensorServicer):
+#     def __init__(self):
+#         self.sensors = {}
 
-    def SendData(self, request, context):
-        if request.message == "REGISTER":
-            self.sensors[request.id] = 0
-        elif request.message == "FIRE THE ALARMS":
-            self.sensors[request.id] = 1
-            counter = 0
-            for key, item in self.sensors.item():
-                if item == 1: counter += 1
-            if counter >= 1:
-                pass
+#     def SendData(self, request, context):
+#         if request.message == "REGISTER":
+#             self.sensors[request.id] = 0
+#         elif request.message == "FIRE THE ALARMS":
+#             self.sensors[request.id] = 1
+#             counter = 0
+#             for key, item in self.sensors.item():
+#                 if item == 1: counter += 1
+#             if counter >= 1:
+#                 pass
 
 
 def serve():

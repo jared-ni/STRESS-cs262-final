@@ -20,13 +20,13 @@ class TrainClient:
         self.location = STOP_POS
         self.speed = TRAIN_SPEED
         self.channel = grpc.insecure_channel(server_address)
-        self.server_stub = train_pb2_grpc.ServerStub(self.channel)
+        self.server_stub = sensor_pb2_grpc.ServerStub(self.channel)
 
         # does this need to be stored
         threading.Thread(target=self.__listen_for_alarms, daemon=True).start()
 
     def __listen_for_alarms(self):
-        n = train_pb2.TrainConnectRequest()
+        n = sensor_pb2.TrainConnectRequest()
         n.train_id = self.train_id
         # continuously  wait for new messages from the server!
         for connectReply in self.server_stub.TrainSensorStream(n):  
@@ -39,7 +39,7 @@ class TrainClient:
 
     def get_status(self):
         request = sensor_pb2.TrainStatusRequest(train_id=self.train_id)
-        response = self.scheduler_stub.GetTrainStatus(request)
+        response = self.server_stub.GetTrainStatus(request)
         return response
 
     def update_status(self):
@@ -52,7 +52,7 @@ class TrainClient:
             location=self.location, 
             speed=self.speed
         )
-        response = self.scheduler_stub.UpdateTrainStatus(request)
+        response = self.server_stub.UpdateTrainStatus(request)
         return response.success
     
     
@@ -81,7 +81,7 @@ class TrainClient:
             requesting_train_id=self.train_id, 
             other_train_id=other_train_id
         )
-        response = self.scheduler_stub.GetOtherTrainStatus(request)
+        response = self.server_stub.GetOtherTrainStatus(request)
         return response
 
 
