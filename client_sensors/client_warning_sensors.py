@@ -16,10 +16,14 @@ class WarningSensorClient:
         self.device = serial.Serial("/dev/tty.usbmodem1101", 9600)
 
     def send_message(self, sensor_id, message):
-        return sensor_pb2.MessageRequest(id = sensor_id, message = message)
+        request = sensor_pb2.MessageRequest(id = sensor_id, message = message)
+        response = self.warning_sensor_stub.SendData(request)
+        return response
+
 
     def run(self):
         # print(f'Sending data')
+        self.send_message(self.sensor_id, "REGISTER")
         while True:
             time.sleep(0.1)
             ultrasonic = self.device.readline().decode('utf-8').rstrip()

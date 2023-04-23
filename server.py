@@ -36,9 +36,23 @@ class Server(sensor_pb2_grpc.SchedulerServicer):
         train_status = self.trains[other_train_id]
         return train_status
 
+class Server(sensor_pb2_grpc.AlarmSensorServicer):
+    def __init__(self):
+        self.sensor = {}
+
+    def SendData(self, request, context):
+        if request.message == "REGISTER":
+            self.sensor[request.id] = 0
+        elif request.message == "FIRE THE ALARMS":
+            self.sensor[request.id] = 1
+            
+
+
+
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     sensor_pb2_grpc.add_SchedulerServicer_to_server(Server(), server)
+    sensor_pb2_grpc.add_AlarmSensorServicer_to_server(Server(), server)
     server.add_insecure_port('[::]:50051')
     server.start()
     print('Scheduler API started...')
