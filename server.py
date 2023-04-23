@@ -7,17 +7,13 @@ sys.path.append("client_sensors")
 import sensor_pb2
 import sensor_pb2_grpc
 
-<<<<<<< HEAD
-class Server(sensor_pb2_grpc.SchedulerServicer):
-=======
 MIN_SAFE_DIST = 10
 TRACK_LENGTH = 30
 STOP_POS = 30
 TRAIN_SPEED = 1
 UPDATE_RATE = 3
 
-class Server(train_pb2_grpc.ServerServicer):
->>>>>>> jess
+class Server(sensor_pb2_grpc.ServerServicer):
     def __init__(self):
         self.trains = {}  # Dictionary to store train status
         self.train_at_stop = False # updates if any trains at stop
@@ -32,15 +28,11 @@ class Server(train_pb2_grpc.ServerServicer):
 
     def UpdateTrainStatus(self, request, context):
         train_id = request.train_id
-<<<<<<< HEAD
-        self.trains[train_id] = sensor_pb2.TrainStatusResponse(
-=======
         
         # check if train at stop
         self.train_at_stop = (request.location == STOP_POS % TRACK_LENGTH)
 
-        self.trains["status"][train_id] = train_pb2.TrainStatusResponse(
->>>>>>> jess
+        self.trains["status"][train_id] = sensor_pb2.TrainStatusResponse(
             train_id=train_id,
             location=request.location,
             speed=request.speed,
@@ -57,7 +49,7 @@ class Server(train_pb2_grpc.ServerServicer):
     
     # The stream which will be used to send new messages to clients
     # TO DO
-    def AlarmStream(self, request: train_pb2.TrainConnectRequest, context):
+    def AlarmStream(self, request: sensor_pb2.TrainConnectRequest, context):
         """
         This is a response-stream type call. This means the server can keep sending messages
         Every client opens this connection and waits for server to send new messages
@@ -84,7 +76,7 @@ class Server(train_pb2_grpc.ServerServicer):
             if not self.train_at_stop:
                 # tell all trains to stop 
                 for train_id in self.trains.keys():
-                    forward = train_pb2.ConnectReply()
+                    forward = sensor_pb2.ConnectReply()
                     forward.train_id = train_id
                     forward.alarm = alarm_bool
                     forward.message = message
@@ -95,7 +87,7 @@ class Server(train_pb2_grpc.ServerServicer):
         else: # warningg sensor; someone crossed the line
             print("Please step away from the tracks.")
 
-        return train_pb2.SensorResponse(
+        return sensor_pb2.SensorResponse(
             id=id,
             success=True,
             error_message = None
@@ -121,12 +113,7 @@ class Server(sensor_pb2_grpc.AlarmSensorServicer):
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-<<<<<<< HEAD
-    sensor_pb2_grpc.add_SchedulerServicer_to_server(Server(), server)
-    sensor_pb2_grpc.add_AlarmSensorServicer_to_server(Server(), server)
-=======
-    train_pb2_grpc.add_ServerServicer_to_server(Server(), server)
->>>>>>> jess
+    sensor_pb2_grpc.add_ServerServicer_to_server(Server(), server)
     server.add_insecure_port('[::]:50051')
     server.start()
     print('Server API started...')

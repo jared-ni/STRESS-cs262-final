@@ -20,9 +20,6 @@ class TrainClient:
         self.location = STOP_POS
         self.speed = TRAIN_SPEED
         self.channel = grpc.insecure_channel(server_address)
-<<<<<<< HEAD:client.py
-        self.scheduler_stub = sensor_pb2_grpc.SchedulerStub(self.channel)
-=======
         self.server_stub = train_pb2_grpc.ServerStub(self.channel)
 
         # does this need to be stored
@@ -39,7 +36,6 @@ class TrainClient:
                 print("From server: {}".format(connectReply.message)) 
                 # stop the train 
                 self.speed = 0
->>>>>>> jess:train_client.py
 
     def get_status(self):
         request = sensor_pb2.TrainStatusRequest(train_id=self.train_id)

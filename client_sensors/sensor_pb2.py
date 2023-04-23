@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0csensor.proto\x12\x04grpc\"\x07\n\x05\x45mpty\"-\n\x0eMessageRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0f\n\x07message\x18\x02 \x01(\t\"N\n\x17OtherTrainStatusRequest\x12\x1b\n\x13requesting_train_id\x18\x01 \x01(\x05\x12\x16\n\x0eother_train_id\x18\x02 \x01(\x05\"&\n\x12TrainStatusRequest\x12\x10\n\x08train_id\x18\x01 \x01(\x05\"H\n\x13TrainStatusResponse\x12\x10\n\x08train_id\x18\x01 \x01(\x05\x12\x10\n\x08location\x18\x02 \x01(\x01\x12\r\n\x05speed\x18\x03 \x01(\x01\"G\n\x12TrainUpdateRequest\x12\x10\n\x08train_id\x18\x01 \x01(\x05\x12\x10\n\x08location\x18\x02 \x01(\x01\x12\r\n\x05speed\x18\x03 \x01(\x01\"&\n\x13TrainUpdateResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x32>\n\x0b\x41larmSensor\x12/\n\x08SendData\x12\x14.grpc.MessageRequest\x1a\x0b.grpc.Empty\"\x00\x32@\n\rWarningSensor\x12/\n\x08SendData\x12\x14.grpc.MessageRequest\x1a\x0b.grpc.Empty\"\x00\x32\xf3\x01\n\tScheduler\x12G\n\x0eGetTrainStatus\x12\x18.grpc.TrainStatusRequest\x1a\x19.grpc.TrainStatusResponse\"\x00\x12J\n\x11UpdateTrainStatus\x12\x18.grpc.TrainUpdateRequest\x1a\x19.grpc.TrainUpdateResponse\"\x00\x12Q\n\x13GetOtherTrainStatus\x12\x1d.grpc.OtherTrainStatusRequest\x1a\x19.grpc.TrainStatusResponse\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0csensor.proto\x12\x04grpc\"\x07\n\x05\x45mpty\"-\n\x0eMessageRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0f\n\x07message\x18\x02 \x01(\t\"\'\n\x13TrainConnectRequest\x12\x10\n\x08train_id\x18\x01 \x01(\x05\"E\n\x11TrainConnectReply\x12\x10\n\x08train_id\x18\x01 \x01(\x05\x12\r\n\x05\x61larm\x18\x02 \x01(\x08\x12\x0f\n\x07message\x18\x03 \x01(\t\"B\n\x14SensorMessageRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\r\n\x05\x61larm\x18\x02 \x01(\x08\x12\x0f\n\x07message\x18\x03 \x01(\t\"D\n\x0eSensorResponse\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0f\n\x07success\x18\x02 \x01(\x08\x12\x15\n\rerror_message\x18\x03 \x01(\t\"N\n\x17OtherTrainStatusRequest\x12\x1b\n\x13requesting_train_id\x18\x01 \x01(\x05\x12\x16\n\x0eother_train_id\x18\x02 \x01(\x05\"&\n\x12TrainStatusRequest\x12\x10\n\x08train_id\x18\x01 \x01(\x05\"H\n\x13TrainStatusResponse\x12\x10\n\x08train_id\x18\x01 \x01(\x05\x12\x10\n\x08location\x18\x02 \x01(\x01\x12\r\n\x05speed\x18\x03 \x01(\x01\"G\n\x12TrainUpdateRequest\x12\x10\n\x08train_id\x18\x01 \x01(\x05\x12\x10\n\x08location\x18\x02 \x01(\x01\x12\r\n\x05speed\x18\x03 \x01(\x01\"&\n\x13TrainUpdateResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x32>\n\x0b\x41larmSensor\x12/\n\x08SendData\x12\x14.grpc.MessageRequest\x1a\x0b.grpc.Empty\"\x00\x32@\n\rWarningSensor\x12/\n\x08SendData\x12\x14.grpc.MessageRequest\x1a\x0b.grpc.Empty\"\x00\x32\x86\x03\n\x06Server\x12G\n\x0eGetTrainStatus\x12\x18.grpc.TrainStatusRequest\x1a\x19.grpc.TrainStatusResponse\"\x00\x12J\n\x11UpdateTrainStatus\x12\x18.grpc.TrainUpdateRequest\x1a\x19.grpc.TrainUpdateResponse\"\x00\x12Q\n\x13GetOtherTrainStatus\x12\x1d.grpc.OtherTrainStatusRequest\x1a\x19.grpc.TrainStatusResponse\"\x00\x12G\n\x11SendSensorMessage\x12\x1a.grpc.SensorMessageRequest\x1a\x14.grpc.SensorResponse\"\x00\x12K\n\x11TrainSensorStream\x12\x19.grpc.TrainConnectRequest\x1a\x17.grpc.TrainConnectReply\"\x00\x30\x01\x62\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'sensor_pb2', globals())
@@ -24,20 +24,28 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _EMPTY._serialized_end=29
   _MESSAGEREQUEST._serialized_start=31
   _MESSAGEREQUEST._serialized_end=76
-  _OTHERTRAINSTATUSREQUEST._serialized_start=78
-  _OTHERTRAINSTATUSREQUEST._serialized_end=156
-  _TRAINSTATUSREQUEST._serialized_start=158
-  _TRAINSTATUSREQUEST._serialized_end=196
-  _TRAINSTATUSRESPONSE._serialized_start=198
-  _TRAINSTATUSRESPONSE._serialized_end=270
-  _TRAINUPDATEREQUEST._serialized_start=272
-  _TRAINUPDATEREQUEST._serialized_end=343
-  _TRAINUPDATERESPONSE._serialized_start=345
-  _TRAINUPDATERESPONSE._serialized_end=383
-  _ALARMSENSOR._serialized_start=385
-  _ALARMSENSOR._serialized_end=447
-  _WARNINGSENSOR._serialized_start=449
-  _WARNINGSENSOR._serialized_end=513
-  _SCHEDULER._serialized_start=516
-  _SCHEDULER._serialized_end=759
+  _TRAINCONNECTREQUEST._serialized_start=78
+  _TRAINCONNECTREQUEST._serialized_end=117
+  _TRAINCONNECTREPLY._serialized_start=119
+  _TRAINCONNECTREPLY._serialized_end=188
+  _SENSORMESSAGEREQUEST._serialized_start=190
+  _SENSORMESSAGEREQUEST._serialized_end=256
+  _SENSORRESPONSE._serialized_start=258
+  _SENSORRESPONSE._serialized_end=326
+  _OTHERTRAINSTATUSREQUEST._serialized_start=328
+  _OTHERTRAINSTATUSREQUEST._serialized_end=406
+  _TRAINSTATUSREQUEST._serialized_start=408
+  _TRAINSTATUSREQUEST._serialized_end=446
+  _TRAINSTATUSRESPONSE._serialized_start=448
+  _TRAINSTATUSRESPONSE._serialized_end=520
+  _TRAINUPDATEREQUEST._serialized_start=522
+  _TRAINUPDATEREQUEST._serialized_end=593
+  _TRAINUPDATERESPONSE._serialized_start=595
+  _TRAINUPDATERESPONSE._serialized_end=633
+  _ALARMSENSOR._serialized_start=635
+  _ALARMSENSOR._serialized_end=697
+  _WARNINGSENSOR._serialized_start=699
+  _WARNINGSENSOR._serialized_end=763
+  _SERVER._serialized_start=766
+  _SERVER._serialized_end=1156
 # @@protoc_insertion_point(module_scope)

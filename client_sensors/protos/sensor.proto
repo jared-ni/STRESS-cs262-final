@@ -17,11 +17,36 @@ message MessageRequest {
   string message = 2;
 }
 
-service Scheduler {
+service Server {
   rpc GetTrainStatus (TrainStatusRequest) returns (TrainStatusResponse) {}
   rpc UpdateTrainStatus (TrainUpdateRequest) returns (TrainUpdateResponse) {}
   rpc GetOtherTrainStatus (OtherTrainStatusRequest) returns (TrainStatusResponse) {}
-  // rpc SendAlarmMessage () returns (TrainStopResponse) {}
+
+  // sensors
+  rpc SendSensorMessage (SensorMessageRequest) returns (SensorResponse) {}
+  rpc TrainSensorStream (TrainConnectRequest) returns (stream TrainConnectReply) {}
+}
+
+message TrainConnectRequest {
+  int32 train_id = 1;
+}
+
+message TrainConnectReply {
+  int32 train_id = 1;
+  bool alarm = 2; // true = alarm, false = warning
+  string message = 3;
+}
+
+message SensorMessageRequest {
+  int32 id = 1;
+  bool alarm = 2; // true = alarm, false = warning
+  string message = 3;
+}
+
+message SensorResponse {
+  int32 id = 1;
+  bool success = 2;
+  string error_message = 3;
 }
 
 message OtherTrainStatusRequest {

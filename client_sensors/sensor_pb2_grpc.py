@@ -127,7 +127,7 @@ class WarningSensor(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
 
-class SchedulerStub(object):
+class ServerStub(object):
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -137,23 +137,33 @@ class SchedulerStub(object):
             channel: A grpc.Channel.
         """
         self.GetTrainStatus = channel.unary_unary(
-                '/grpc.Scheduler/GetTrainStatus',
+                '/grpc.Server/GetTrainStatus',
                 request_serializer=sensor__pb2.TrainStatusRequest.SerializeToString,
                 response_deserializer=sensor__pb2.TrainStatusResponse.FromString,
                 )
         self.UpdateTrainStatus = channel.unary_unary(
-                '/grpc.Scheduler/UpdateTrainStatus',
+                '/grpc.Server/UpdateTrainStatus',
                 request_serializer=sensor__pb2.TrainUpdateRequest.SerializeToString,
                 response_deserializer=sensor__pb2.TrainUpdateResponse.FromString,
                 )
         self.GetOtherTrainStatus = channel.unary_unary(
-                '/grpc.Scheduler/GetOtherTrainStatus',
+                '/grpc.Server/GetOtherTrainStatus',
                 request_serializer=sensor__pb2.OtherTrainStatusRequest.SerializeToString,
                 response_deserializer=sensor__pb2.TrainStatusResponse.FromString,
                 )
+        self.SendSensorMessage = channel.unary_unary(
+                '/grpc.Server/SendSensorMessage',
+                request_serializer=sensor__pb2.SensorMessageRequest.SerializeToString,
+                response_deserializer=sensor__pb2.SensorResponse.FromString,
+                )
+        self.TrainSensorStream = channel.unary_stream(
+                '/grpc.Server/TrainSensorStream',
+                request_serializer=sensor__pb2.TrainConnectRequest.SerializeToString,
+                response_deserializer=sensor__pb2.TrainConnectReply.FromString,
+                )
 
 
-class SchedulerServicer(object):
+class ServerServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def GetTrainStatus(self, request, context):
@@ -174,8 +184,21 @@ class SchedulerServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def SendSensorMessage(self, request, context):
+        """sensors
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
-def add_SchedulerServicer_to_server(servicer, server):
+    def TrainSensorStream(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+
+def add_ServerServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'GetTrainStatus': grpc.unary_unary_rpc_method_handler(
                     servicer.GetTrainStatus,
@@ -192,14 +215,24 @@ def add_SchedulerServicer_to_server(servicer, server):
                     request_deserializer=sensor__pb2.OtherTrainStatusRequest.FromString,
                     response_serializer=sensor__pb2.TrainStatusResponse.SerializeToString,
             ),
+            'SendSensorMessage': grpc.unary_unary_rpc_method_handler(
+                    servicer.SendSensorMessage,
+                    request_deserializer=sensor__pb2.SensorMessageRequest.FromString,
+                    response_serializer=sensor__pb2.SensorResponse.SerializeToString,
+            ),
+            'TrainSensorStream': grpc.unary_stream_rpc_method_handler(
+                    servicer.TrainSensorStream,
+                    request_deserializer=sensor__pb2.TrainConnectRequest.FromString,
+                    response_serializer=sensor__pb2.TrainConnectReply.SerializeToString,
+            ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'grpc.Scheduler', rpc_method_handlers)
+            'grpc.Server', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
  # This class is part of an EXPERIMENTAL API.
-class Scheduler(object):
+class Server(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
@@ -213,7 +246,7 @@ class Scheduler(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/grpc.Scheduler/GetTrainStatus',
+        return grpc.experimental.unary_unary(request, target, '/grpc.Server/GetTrainStatus',
             sensor__pb2.TrainStatusRequest.SerializeToString,
             sensor__pb2.TrainStatusResponse.FromString,
             options, channel_credentials,
@@ -230,7 +263,7 @@ class Scheduler(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/grpc.Scheduler/UpdateTrainStatus',
+        return grpc.experimental.unary_unary(request, target, '/grpc.Server/UpdateTrainStatus',
             sensor__pb2.TrainUpdateRequest.SerializeToString,
             sensor__pb2.TrainUpdateResponse.FromString,
             options, channel_credentials,
@@ -247,8 +280,42 @@ class Scheduler(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/grpc.Scheduler/GetOtherTrainStatus',
+        return grpc.experimental.unary_unary(request, target, '/grpc.Server/GetOtherTrainStatus',
             sensor__pb2.OtherTrainStatusRequest.SerializeToString,
             sensor__pb2.TrainStatusResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def SendSensorMessage(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/grpc.Server/SendSensorMessage',
+            sensor__pb2.SensorMessageRequest.SerializeToString,
+            sensor__pb2.SensorResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def TrainSensorStream(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_stream(request, target, '/grpc.Server/TrainSensorStream',
+            sensor__pb2.TrainConnectRequest.SerializeToString,
+            sensor__pb2.TrainConnectReply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
