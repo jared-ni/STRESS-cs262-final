@@ -5,130 +5,23 @@ import grpc
 import sensor_pb2 as sensor__pb2
 
 
-class AlarmSensorStub(object):
-    """Missing associated documentation comment in .proto file."""
-
-    def __init__(self, channel):
-        """Constructor.
-
-        Args:
-            channel: A grpc.Channel.
-        """
-        self.SendData = channel.unary_unary(
-                '/grpc.AlarmSensor/SendData',
-                request_serializer=sensor__pb2.MessageRequest.SerializeToString,
-                response_deserializer=sensor__pb2.Empty.FromString,
-                )
-
-
-class AlarmSensorServicer(object):
-    """Missing associated documentation comment in .proto file."""
-
-    def SendData(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-
-def add_AlarmSensorServicer_to_server(servicer, server):
-    rpc_method_handlers = {
-            'SendData': grpc.unary_unary_rpc_method_handler(
-                    servicer.SendData,
-                    request_deserializer=sensor__pb2.MessageRequest.FromString,
-                    response_serializer=sensor__pb2.Empty.SerializeToString,
-            ),
-    }
-    generic_handler = grpc.method_handlers_generic_handler(
-            'grpc.AlarmSensor', rpc_method_handlers)
-    server.add_generic_rpc_handlers((generic_handler,))
-
-
- # This class is part of an EXPERIMENTAL API.
-class AlarmSensor(object):
-    """Missing associated documentation comment in .proto file."""
-
-    @staticmethod
-    def SendData(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/grpc.AlarmSensor/SendData',
-            sensor__pb2.MessageRequest.SerializeToString,
-            sensor__pb2.Empty.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-
-class WarningSensorStub(object):
-    """Missing associated documentation comment in .proto file."""
-
-    def __init__(self, channel):
-        """Constructor.
-
-        Args:
-            channel: A grpc.Channel.
-        """
-        self.SendData = channel.unary_unary(
-                '/grpc.WarningSensor/SendData',
-                request_serializer=sensor__pb2.MessageRequest.SerializeToString,
-                response_deserializer=sensor__pb2.Empty.FromString,
-                )
-
-
-class WarningSensorServicer(object):
-    """Missing associated documentation comment in .proto file."""
-
-    def SendData(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-
-def add_WarningSensorServicer_to_server(servicer, server):
-    rpc_method_handlers = {
-            'SendData': grpc.unary_unary_rpc_method_handler(
-                    servicer.SendData,
-                    request_deserializer=sensor__pb2.MessageRequest.FromString,
-                    response_serializer=sensor__pb2.Empty.SerializeToString,
-            ),
-    }
-    generic_handler = grpc.method_handlers_generic_handler(
-            'grpc.WarningSensor', rpc_method_handlers)
-    server.add_generic_rpc_handlers((generic_handler,))
-
-
- # This class is part of an EXPERIMENTAL API.
-class WarningSensor(object):
-    """Missing associated documentation comment in .proto file."""
-
-    @staticmethod
-    def SendData(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/grpc.WarningSensor/SendData',
-            sensor__pb2.MessageRequest.SerializeToString,
-            sensor__pb2.Empty.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-
 class ServerStub(object):
-    """Missing associated documentation comment in .proto file."""
+    """service AlarmSensor {
+    rpc SendData (MessageRequest) returns (Empty) {}
+    }
+
+    service WarningSensor {
+    rpc SendData (MessageRequest) returns (Empty) {}
+    }
+
+    message Empty {}
+
+    message MessageRequest {
+    int32 id = 1;
+    string message = 2;
+    }
+
+    """
 
     def __init__(self, channel):
         """Constructor.
@@ -164,7 +57,22 @@ class ServerStub(object):
 
 
 class ServerServicer(object):
-    """Missing associated documentation comment in .proto file."""
+    """service AlarmSensor {
+    rpc SendData (MessageRequest) returns (Empty) {}
+    }
+
+    service WarningSensor {
+    rpc SendData (MessageRequest) returns (Empty) {}
+    }
+
+    message Empty {}
+
+    message MessageRequest {
+    int32 id = 1;
+    string message = 2;
+    }
+
+    """
 
     def GetTrainStatus(self, request, context):
         """Missing associated documentation comment in .proto file."""
@@ -233,7 +141,22 @@ def add_ServerServicer_to_server(servicer, server):
 
  # This class is part of an EXPERIMENTAL API.
 class Server(object):
-    """Missing associated documentation comment in .proto file."""
+    """service AlarmSensor {
+    rpc SendData (MessageRequest) returns (Empty) {}
+    }
+
+    service WarningSensor {
+    rpc SendData (MessageRequest) returns (Empty) {}
+    }
+
+    message Empty {}
+
+    message MessageRequest {
+    int32 id = 1;
+    string message = 2;
+    }
+
+    """
 
     @staticmethod
     def GetTrainStatus(request,
