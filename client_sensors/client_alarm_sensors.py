@@ -12,24 +12,24 @@ class AlarmSensorClient:
     def __init__(self, sensor_id, server_address='localhost:50051'):
         self.sensor_id = sensor_id
         self.channel = grpc.insecure_channel(server_address)
-        self.alarm_sensor_stub = sensor_pb2_grpc.AlarmSensorStub(self.channel)
+        self.server_stub = sensor_pb2_grpc.ServerStub(self.channel)
         self.device = serial.Serial("/dev/tty.usbmodem1101", 9600)
 
-    def send_message(self, sensor_id, message):
-        request = sensor_pb2.MessageRequest(id = sensor_id, message = message)
-        response = self.alarm_sensor_stub.SendData(request)
+    def send_message(self, sensor_id, alarm, message):
+        request = sensor_pb2.SensorMessageRequest(id = sensor_id, alarm = alarm, message = message)
+        response = self.server_stub.SendSensorMessage(request)
         return response
 
     def run(self):
-        # print(f'Sending data')
-        self.send_message(self.sensor_id, "REGISTER")
+        print(f'Sending data')
+        # self.send_message(self.sensor_id, "REGISTER")
         while True:
             time.sleep(0.1)
             line = self.device.readline().decode('utf-8').rstrip()
             print(line); line = line.split("|"); 
             ultrasonic = line[0]; pir = line[1]
             if int(ultrasonic) <= 50 and int(pir) == 1:
-                self.send_message(self.sensor_id, "FIRE THE ALARMS") 
+                self.send_message(self.sensor_id, True, "FIRE THE ALARMS") 
                 playsound('someonefellin.wav')
                 break     
             
