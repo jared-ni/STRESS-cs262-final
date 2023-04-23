@@ -13,13 +13,33 @@ TRACK_LENGTH = 30
 STOP_POS = 30
 TRAIN_SPEED = 1
 UPDATE_RATE = 3
+
 class TrainClient:
     def __init__(self, train_id, server_address='localhost:50051'):
         self.train_id = train_id
         self.location = STOP_POS
         self.speed = TRAIN_SPEED
         self.channel = grpc.insecure_channel(server_address)
+<<<<<<< HEAD:client.py
         self.scheduler_stub = sensor_pb2_grpc.SchedulerStub(self.channel)
+=======
+        self.server_stub = train_pb2_grpc.ServerStub(self.channel)
+
+        # does this need to be stored
+        threading.Thread(target=self.__listen_for_alarms, daemon=True).start()
+
+    def __listen_for_alarms(self):
+        n = train_pb2.TrainConnectRequest()
+        n.train_id = self.train_id
+        # continuously  wait for new messages from the server!
+        for connectReply in self.server_stub.TrainSensorStream(n):  
+            # if alarm, not warning
+            if connectReply.alarm:
+                # display alarm message
+                print("From server: {}".format(connectReply.message)) 
+                # stop the train 
+                self.speed = 0
+>>>>>>> jess:train_client.py
 
     def get_status(self):
         request = sensor_pb2.TrainStatusRequest(train_id=self.train_id)

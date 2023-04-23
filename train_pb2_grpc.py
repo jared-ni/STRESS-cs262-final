@@ -5,7 +5,7 @@ import grpc
 import train_pb2 as train__pb2
 
 
-class SchedulerStub(object):
+class ServerStub(object):
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -15,23 +15,28 @@ class SchedulerStub(object):
             channel: A grpc.Channel.
         """
         self.GetTrainStatus = channel.unary_unary(
-                '/Scheduler/GetTrainStatus',
+                '/Server/GetTrainStatus',
                 request_serializer=train__pb2.TrainStatusRequest.SerializeToString,
                 response_deserializer=train__pb2.TrainStatusResponse.FromString,
                 )
         self.UpdateTrainStatus = channel.unary_unary(
-                '/Scheduler/UpdateTrainStatus',
+                '/Server/UpdateTrainStatus',
                 request_serializer=train__pb2.TrainUpdateRequest.SerializeToString,
                 response_deserializer=train__pb2.TrainUpdateResponse.FromString,
                 )
         self.GetOtherTrainStatus = channel.unary_unary(
-                '/Scheduler/GetOtherTrainStatus',
+                '/Server/GetOtherTrainStatus',
                 request_serializer=train__pb2.OtherTrainStatusRequest.SerializeToString,
                 response_deserializer=train__pb2.TrainStatusResponse.FromString,
                 )
+        self.SendData = channel.unary_unary(
+                '/Server/SendData',
+                request_serializer=train__pb2.MessageRequest.SerializeToString,
+                response_deserializer=train__pb2.Empty.FromString,
+                )
 
 
-class SchedulerServicer(object):
+class ServerServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def GetTrainStatus(self, request, context):
@@ -52,8 +57,15 @@ class SchedulerServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def SendData(self, request, context):
+        """alarmSensor
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
-def add_SchedulerServicer_to_server(servicer, server):
+
+def add_ServerServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'GetTrainStatus': grpc.unary_unary_rpc_method_handler(
                     servicer.GetTrainStatus,
@@ -70,14 +82,19 @@ def add_SchedulerServicer_to_server(servicer, server):
                     request_deserializer=train__pb2.OtherTrainStatusRequest.FromString,
                     response_serializer=train__pb2.TrainStatusResponse.SerializeToString,
             ),
+            'SendData': grpc.unary_unary_rpc_method_handler(
+                    servicer.SendData,
+                    request_deserializer=train__pb2.MessageRequest.FromString,
+                    response_serializer=train__pb2.Empty.SerializeToString,
+            ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'Scheduler', rpc_method_handlers)
+            'Server', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
  # This class is part of an EXPERIMENTAL API.
-class Scheduler(object):
+class Server(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
@@ -91,7 +108,7 @@ class Scheduler(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/Scheduler/GetTrainStatus',
+        return grpc.experimental.unary_unary(request, target, '/Server/GetTrainStatus',
             train__pb2.TrainStatusRequest.SerializeToString,
             train__pb2.TrainStatusResponse.FromString,
             options, channel_credentials,
@@ -108,7 +125,7 @@ class Scheduler(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/Scheduler/UpdateTrainStatus',
+        return grpc.experimental.unary_unary(request, target, '/Server/UpdateTrainStatus',
             train__pb2.TrainUpdateRequest.SerializeToString,
             train__pb2.TrainUpdateResponse.FromString,
             options, channel_credentials,
@@ -125,8 +142,25 @@ class Scheduler(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/Scheduler/GetOtherTrainStatus',
+        return grpc.experimental.unary_unary(request, target, '/Server/GetOtherTrainStatus',
             train__pb2.OtherTrainStatusRequest.SerializeToString,
             train__pb2.TrainStatusResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def SendData(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Server/SendData',
+            train__pb2.MessageRequest.SerializeToString,
+            train__pb2.Empty.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
