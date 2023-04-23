@@ -20,7 +20,7 @@ class TrainClient:
         self.channel = grpc.insecure_channel(server_address)
         self.server_stub = train_pb2_grpc.ServerStub(self.channel)
 
-    def thread(self):
+        # does this need to be stored
         threading.Thread(target=self.__listen_for_alarms, daemon=True).start()
 
     def __listen_for_alarms(self):
