@@ -49,10 +49,7 @@ class Server(sensor_pb2_grpc.AlarmSensorServicer):
             for key, item in self.sensors.item():
                 if item == 1: counter += 1
             if counter >= 1:
-                 pass
-
-            
-
+                pass
 
 
 def serve():

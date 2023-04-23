@@ -21,6 +21,7 @@ service Scheduler {
   rpc GetTrainStatus (TrainStatusRequest) returns (TrainStatusResponse) {}
   rpc UpdateTrainStatus (TrainUpdateRequest) returns (TrainUpdateResponse) {}
   rpc GetOtherTrainStatus (OtherTrainStatusRequest) returns (TrainStatusResponse) {}
+  // rpc SendAlarmMessage () returns (TrainStopResponse) {}
 }
 
 message OtherTrainStatusRequest {
