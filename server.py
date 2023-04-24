@@ -8,7 +8,7 @@ import sys
 import sensor_pb2
 import sensor_pb2_grpc
 
-MIN_SAFE_DIST = 10
+MIN_SAFE_DIST = 5
 TRACK_LENGTH = 30
 STOP_POS = 30
 TRAIN_SPEED = 1
@@ -18,7 +18,44 @@ class Server(sensor_pb2_grpc.ServerServicer):
     def __init__(self):
         self.trains = {}  # Dictionary to store train status
         self.train_at_stop = False # updates if any trains at stop
+
+    def Signup(self, request, context):
+        n = sensor_pb2.SignupReply()
+        train_id = request.train_id
+        # check if user exists
+        if train_id in self.trains.keys():
+            n.success = False
+            n.error = "Train already on track."
+            print("Duplicate train start request from {}".format(train_id))
+        else:    
+            self.trains[train_id] = {"status": None, "queue": queue.SimpleQueue()}
+            # once user activated, then re-queue undelivered messages
+            print("Train {} set on the track".format(train_id))
+            n.success = True
+        return n    
     
+    def Signout(self, request, context):
+        n = sensor_pb2.SignupReply()
+        train_id = request.train_id
+        # if train_id not in self.trains.keys():
+        #     n.success = False
+        #     n.error = "No existing train found."
+        #     print("Nonexistent train leaving request from {}".format(train_id))
+        # else:
+        del self.trains[train_id]
+        print(self.trains)
+        print("Train {} left the track.".format(train_id))
+        return n
+    
+    def SensorReset(self, request, context):
+        for train_id in self.trains.keys():
+            forward = sensor_pb2.TrainConnectReply()
+            forward.train_id = train_id
+            forward.alarm = False # not alarm telling to stop; restart instead
+            forward.message = str(TRAIN_SPEED) # restart with this speed
+            self.trains[train_id]["queue"].put(forward)
+
+
     def GetTrainStatus(self, request, context):
         train_id = request.train_id
         if train_id not in self.trains:
@@ -59,7 +96,6 @@ class Server(sensor_pb2_grpc.ServerServicer):
         :return:
         """
         train_id = request.train_id
-        self.trains[train_id] = {"status": None, "queue": queue.SimpleQueue()}
         # infinite loop starts for each client
         while True:
             # Check if recipient is active, if they have queued messages
@@ -95,22 +131,6 @@ class Server(sensor_pb2_grpc.ServerServicer):
             error_message = None
         )
     
- 
-
-# class Server(sensor_pb2_grpc.AlarmSensorServicer):
-#     def __init__(self):
-#         self.sensors = {}
-
-#     def SendData(self, request, context):
-#         if request.message == "REGISTER":
-#             self.sensors[request.id] = 0
-#         elif request.message == "FIRE THE ALARMS":
-#             self.sensors[request.id] = 1
-#             counter = 0
-#             for key, item in self.sensors.item():
-#                 if item == 1: counter += 1
-#             if counter >= 1:
-#                 pass
 
 
 def serve():
