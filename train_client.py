@@ -8,6 +8,8 @@ import sys
 import sensor_pb2
 import sensor_pb2_grpc as rpc
 
+import socket
+
 MIN_SAFE_DIST = 5
 TRACK_LENGTH = 30
 STOP_POS = 30
@@ -15,7 +17,7 @@ TRAIN_SPEED = 1
 UPDATE_RATE = 3
 
 class TrainClient:
-    def __init__(self, server_address='localhost:50051'):
+    def __init__(self, server_address=f'{socket.gethostbyname(socket.gethostname())}:50051'):
         self.train_id = None
         self.location = STOP_POS
         self.speed = TRAIN_SPEED

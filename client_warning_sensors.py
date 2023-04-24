@@ -7,9 +7,27 @@ from playsound import playsound
 
 import sensor_pb2
 import sensor_pb2_grpc
+import socket
 
 class WarningSensorClient:
+<<<<<<< Updated upstream
     def __init__(self, sensor_id, server_address='localhost:50052'):
+=======
+    def __init__(self, sensor_id, 
+                 server_address=f'{socket.gethostbyname(socket.gethostname())}:50052'):
+        server_ip = input("Are you running server on localhost? (y/n) ")
+        while True:
+            if server_ip == "y":
+                break
+            elif server_ip == "n":
+                ip_addr = input("Enter server ip address: ")
+                server_address = ip_addr + ":50052"
+                break
+            else:
+                server_ip = input("Are you running server on localhost? (y/n)")
+
+        print(f'Connecting to server at {server_address}...')
+>>>>>>> Stashed changes
         self.sensor_id = sensor_id
         self.channel = grpc.insecure_channel(server_address)
         self.server_stub = sensor_pb2_grpc.ServerStub(self.channel)

@@ -7,6 +7,7 @@ import sys
 # sys.path.append("client_sensors")
 import sensor_pb2
 import sensor_pb2_grpc
+import socket
 
 MIN_SAFE_DIST = 5
 TRACK_LENGTH = 30
@@ -20,6 +21,7 @@ class Server(sensor_pb2_grpc.ServerServicer):
         self.train_at_stop = False # updates if any trains at stop
 
     def Signup(self, request, context):
+        print("Signup request received")
         n = sensor_pb2.SignupReply()
         train_id = request.train_id
         # check if user exists
@@ -146,7 +148,8 @@ class Server(sensor_pb2_grpc.ServerServicer):
 def serve(): 
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     sensor_pb2_grpc.add_ServerServicer_to_server(Server(), server)
-    server.add_insecure_port('10.250.119.191:50052')
+    local_ip = socket.gethostbyname(socket.gethostname())
+    server.add_insecure_port(f'{local_ip}:50051')
     server.start()
     print('Server API started...')
     
