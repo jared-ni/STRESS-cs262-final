@@ -142,14 +142,14 @@ class Server(sensor_pb2_grpc.ServerServicer):
         if request.alarm:
             sensor_type = "Alarm"
         print(f"Successful connection with {sensor_type} Sensor {sensor_id}")
-        return sensor_pb2.SensorConnectReply(success=True,error="none")
+        return sensor_pb2.SensorConnectResponse(success=True,error="none")
 
 
 def serve(): 
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     sensor_pb2_grpc.add_ServerServicer_to_server(Server(), server)
     local_ip = socket.gethostbyname(socket.gethostname())
-    server.add_insecure_port(f'{local_ip}:50051')
+    server.add_insecure_port(f'{local_ip}:50052')
     server.start()
     print('Server API started...')
     

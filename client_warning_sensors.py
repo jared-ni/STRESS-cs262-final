@@ -10,9 +10,6 @@ import sensor_pb2_grpc
 import socket
 
 class WarningSensorClient:
-<<<<<<< Updated upstream
-    def __init__(self, sensor_id, server_address='localhost:50052'):
-=======
     def __init__(self, sensor_id, 
                  server_address=f'{socket.gethostbyname(socket.gethostname())}:50052'):
         server_ip = input("Are you running server on localhost? (y/n) ")
@@ -27,7 +24,7 @@ class WarningSensorClient:
                 server_ip = input("Are you running server on localhost? (y/n)")
 
         print(f'Connecting to server at {server_address}...')
->>>>>>> Stashed changes
+        
         self.sensor_id = sensor_id
         self.channel = grpc.insecure_channel(server_address)
         self.server_stub = sensor_pb2_grpc.ServerStub(self.channel)
