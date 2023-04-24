@@ -4,12 +4,12 @@ import time
 import threading
 import serial
 from playsound import playsound
-
+import socket
 import sensor_pb2
 import sensor_pb2_grpc
 
 class AlarmSensorClient:
-    def __init__(self, sensor_id, server_address='10.250.119.191:50052'):
+    def __init__(self, sensor_id, server_address=f'{socket.gethostbyname(socket.gethostname())}:50052'):
         self.sensor_id = sensor_id
         self.channel = grpc.insecure_channel(server_address)
         self.server_stub = sensor_pb2_grpc.ServerStub(self.channel)
