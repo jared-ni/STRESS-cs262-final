@@ -26,13 +26,14 @@ class WarningSensorClient:
         reading = False
         # self.send_message(self.sensor_id, "REGISTER")
         while True:
-            time.sleep(1)
+            time.sleep(0.1)
             pir = int(self.device.readline().decode('utf-8').rstrip())
             print(pir)
             if pir == 1 and not reading:
                 reading = True
                 self.send_message(self.sensor_id, True, "WARNING")
-                playsound('warning.m4a')
+                my_thread = threading.Thread(target=playsound, args = ('warning.m4a',))
+                my_thread.start()
             elif pir == 0 and reading:
                 reading = False
                 
