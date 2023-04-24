@@ -28,8 +28,18 @@ service Server {
   rpc SendSensorMessage (SensorMessageRequest) returns (SensorResponse) {}
   rpc TrainSensorStream (TrainConnectRequest) returns (stream TrainConnectReply) {}
   rpc ResetSensor (ResetSensorRequest) returns (ResetSensorResponse) {}
-  rpc RestartTrain (RestartTrainRequest) returns (RestartTrainResponse) {}
+  rpc SensorConnect (SensorConnectRequest) returns (SensorConnectResponse) {}
+  // rpc RestartTrain (RestartTrainRequest) returns (RestartTrainResponse) {}
 }
+
+message SensorConnectRequest {
+  int32 sensor_id = 1;
+}
+
+message SensorConnectResponse {
+  bool success = 1;
+  string error = 2;
+} 
 
 message ResetSensorRequest {}
 
@@ -38,14 +48,14 @@ message ResetSensorResponse {
   string error = 2;
 } 
 
-message RestartTrainRequest {
-  int32 train_id = 1;
-}
+// message RestartTrainRequest {
+//   int32 train_id = 1;
+// }
 
-message RestartTrainResponse {
-  bool success = 1;
-  string error = 2;
-} 
+// message RestartTrainResponse {
+//   bool success = 1;
+//   string error = 2;
+// } 
 
 message SignoutRequest {
   int32 train_id = 1;
@@ -72,7 +82,8 @@ message TrainConnectRequest {
 message TrainConnectReply {
   int32 train_id = 1;
   bool alarm = 2; // true = alarm, false = warning
-  string message = 3;
+  int32 new_speed = 3; // can either tell train to stop or restart
+  string message = 4;
 }
 
 message SensorMessageRequest {

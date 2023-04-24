@@ -47,13 +47,15 @@ class Server(sensor_pb2_grpc.ServerServicer):
         print("Train {} left the track.".format(train_id))
         return n
     
-    def SensorReset(self, request, context):
+    def ResetSensor(self, request, context):
         for train_id in self.trains.keys():
             forward = sensor_pb2.TrainConnectReply()
             forward.train_id = train_id
-            forward.alarm = False # not alarm telling to stop; restart instead
-            forward.message = str(TRAIN_SPEED) # restart with this speed
+            forward.alarm = True # alarm
+            forward.new_speed = TRAIN_SPEED
+            forward.message = "Restarting train to normal speed"
             self.trains[train_id]["queue"].put(forward)
+        return sensor_pb2.ResetSensorResponse(success=True,error="None")
 
 
     def GetTrainStatus(self, request, context):
@@ -117,6 +119,7 @@ class Server(sensor_pb2_grpc.ServerServicer):
                     forward = sensor_pb2.TrainConnectReply()
                     forward.train_id = train_id
                     forward.alarm = alarm_bool
+                    forward.new_speed = 0
                     forward.message = message
                     self.trains[train_id]["queue"].put(forward)
 
@@ -131,12 +134,16 @@ class Server(sensor_pb2_grpc.ServerServicer):
             error_message = None
         )
     
+    def SensorConnect(self, request, context):
+        sensor_id = request.sensor_id
+        print(f"Successful connection with Sensor {sensor_id}")
+        return sensor_pb2.SensorConnectReply(success=True,error="none")
 
 
-def serve():
+def serve(): 
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     sensor_pb2_grpc.add_ServerServicer_to_server(Server(), server)
-    server.add_insecure_port('[::]:50051')
+    server.add_insecure_port('localhost:50051')
     server.start()
     print('Server API started...')
     

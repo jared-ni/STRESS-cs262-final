@@ -15,6 +15,9 @@ class AlarmSensorClient:
         self.server_stub = sensor_pb2_grpc.ServerStub(self.channel)
         self.device = serial.Serial("/dev/tty.usbmodem1101", 9600)
 
+        n = sensor_pb2.SensorConnectRequest(sensor_id=sensor_id)
+        reply = self.server_stub.SensorConnect(n)
+
     def send_message(self, sensor_id, alarm, message):
         request = sensor_pb2.SensorMessageRequest(id = sensor_id, alarm = alarm, message = message)
         response = self.server_stub.SendSensorMessage(request)
@@ -35,8 +38,8 @@ class AlarmSensorClient:
                 playsound('alarm.m4a')
             elif int(pir) == 0 and reading:
                 reading = False
-                n = sensor_pb2.ResetSensorRequest()
-                reply = self.server_stub.ResetSensor(n)
+                # n = sensor_pb2.ResetSensorRequest()
+                # reply = self.server_stub.ResetSensor(n)
 
 
 if __name__ == '__main__':

@@ -69,10 +69,10 @@ class ServerStub(object):
                 request_serializer=sensor__pb2.ResetSensorRequest.SerializeToString,
                 response_deserializer=sensor__pb2.ResetSensorResponse.FromString,
                 )
-        self.RestartTrain = channel.unary_unary(
-                '/grpc.Server/RestartTrain',
-                request_serializer=sensor__pb2.RestartTrainRequest.SerializeToString,
-                response_deserializer=sensor__pb2.RestartTrainResponse.FromString,
+        self.SensorConnect = channel.unary_unary(
+                '/grpc.Server/SensorConnect',
+                request_serializer=sensor__pb2.SensorConnectRequest.SerializeToString,
+                response_deserializer=sensor__pb2.SensorConnectResponse.FromString,
                 )
 
 
@@ -143,7 +143,7 @@ class ServerServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def RestartTrain(self, request, context):
+    def SensorConnect(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -192,10 +192,10 @@ def add_ServerServicer_to_server(servicer, server):
                     request_deserializer=sensor__pb2.ResetSensorRequest.FromString,
                     response_serializer=sensor__pb2.ResetSensorResponse.SerializeToString,
             ),
-            'RestartTrain': grpc.unary_unary_rpc_method_handler(
-                    servicer.RestartTrain,
-                    request_deserializer=sensor__pb2.RestartTrainRequest.FromString,
-                    response_serializer=sensor__pb2.RestartTrainResponse.SerializeToString,
+            'SensorConnect': grpc.unary_unary_rpc_method_handler(
+                    servicer.SensorConnect,
+                    request_deserializer=sensor__pb2.SensorConnectRequest.FromString,
+                    response_serializer=sensor__pb2.SensorConnectResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -359,7 +359,7 @@ class Server(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def RestartTrain(request,
+    def SensorConnect(request,
             target,
             options=(),
             channel_credentials=None,
@@ -369,8 +369,8 @@ class Server(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/grpc.Server/RestartTrain',
-            sensor__pb2.RestartTrainRequest.SerializeToString,
-            sensor__pb2.RestartTrainResponse.FromString,
+        return grpc.experimental.unary_unary(request, target, '/grpc.Server/SensorConnect',
+            sensor__pb2.SensorConnectRequest.SerializeToString,
+            sensor__pb2.SensorConnectResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
