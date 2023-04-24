@@ -31,7 +31,7 @@ class WarningSensorClient:
             if pir == 1 and not reading:
                 reading = True
                 self.send_message(self.sensor_id, True, "WARNING")
-                playsound('untitled.wav')
+                playsound('warning.m4a')
             elif pir == 0 and reading:
                 reading = False
                 

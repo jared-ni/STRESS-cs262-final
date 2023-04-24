@@ -32,7 +32,7 @@ class AlarmSensorClient:
             if pir == 1 and ultrasonic <= 100 and not reading:
                 reading = True
                 self.send_message(self.sensor_id, True, "FIRE THE ALARMS") 
-                playsound('someonefellin.wav')
+                playsound('alarm.m4a')
             elif int(pir) == 0 and reading:
                 reading = False
                 n = sensor_pb2.ResetSensorRequest()
