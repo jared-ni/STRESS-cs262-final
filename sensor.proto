@@ -27,7 +27,25 @@ service Server {
   // sensors
   rpc SendSensorMessage (SensorMessageRequest) returns (SensorResponse) {}
   rpc TrainSensorStream (TrainConnectRequest) returns (stream TrainConnectReply) {}
+  rpc ResetSensor (ResetSensorRequest) returns (ResetSensorResponse) {}
+  rpc RestartTrain (RestartTrainRequest) returns (RestartTrainResponse) {}
 }
+
+message ResetSensorRequest {}
+
+message ResetSensorResponse {
+  bool success = 1;
+  string error = 2;
+} 
+
+message RestartTrainRequest {
+  int32 train_id = 1;
+}
+
+message RestartTrainResponse {
+  bool success = 1;
+  string error = 2;
+} 
 
 message SignoutRequest {
   int32 train_id = 1;

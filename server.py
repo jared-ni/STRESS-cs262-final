@@ -46,6 +46,15 @@ class Server(sensor_pb2_grpc.ServerServicer):
         print(self.trains)
         print("Train {} left the track.".format(train_id))
         return n
+    
+    def SensorReset(self, request, context):
+        for train_id in self.trains.keys():
+            forward = sensor_pb2.TrainConnectReply()
+            forward.train_id = train_id
+            forward.alarm = False # not alarm telling to stop; restart instead
+            forward.message = str(TRAIN_SPEED) # restart with this speed
+            self.trains[train_id]["queue"].put(forward)
+
 
     def GetTrainStatus(self, request, context):
         train_id = request.train_id

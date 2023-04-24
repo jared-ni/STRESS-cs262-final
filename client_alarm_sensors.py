@@ -35,6 +35,8 @@ class AlarmSensorClient:
                 playsound('someonefellin.wav')
             elif int(pir) == 0 and reading:
                 reading = False
+                n = sensor_pb2.ResetSensorRequest()
+                reply = self.server_stub.ResetSensor(n)
 
 
 if __name__ == '__main__':

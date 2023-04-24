@@ -36,12 +36,15 @@ class TrainClient:
             n.train_id = self.train_id
             # continuously  wait for new messages from the server!
             for connectReply in self.conn.TrainSensorStream(n):  
-                # if alarm, not warning
+                # if alarm, not reset
                 if connectReply.alarm:
                     # display alarm message
                     print("From server: {}".format(connectReply.message)) 
                     # stop the train 
                     self.speed = 0
+                else:
+                    print("From server: Restart trains at speed {}".format(connectReply.message)) 
+                    self.speed = int(connectReply.message)
 
     def signup(self, train_id):
         if train_id != '':
