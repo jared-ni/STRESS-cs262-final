@@ -34,6 +34,7 @@ service Server {
 
 message SensorConnectRequest {
   int32 sensor_id = 1;
+  bool alarm = 2;
 }
 
 message SensorConnectResponse {

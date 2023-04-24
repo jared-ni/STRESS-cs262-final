@@ -41,7 +41,8 @@ class TrainClient:
                     # display alarm message
                     print("From server: {}".format(connectReply.message)) 
                     # stop the train 
-                    self.speed = 0
+                    self.speed = connectReply.new_speed
+                    self.update_status()
                 else:
                     print("From server: Restart trains at speed {}".format(connectReply.message)) 
                     self.speed = int(connectReply.message)

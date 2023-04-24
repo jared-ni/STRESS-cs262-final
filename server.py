@@ -136,7 +136,10 @@ class Server(sensor_pb2_grpc.ServerServicer):
     
     def SensorConnect(self, request, context):
         sensor_id = request.sensor_id
-        print(f"Successful connection with Sensor {sensor_id}")
+        sensor_type = "Warning"
+        if request.alarm:
+            sensor_type = "Alarm"
+        print(f"Successful connection with {sensor_type} Sensor {sensor_id}")
         return sensor_pb2.SensorConnectReply(success=True,error="none")
 
 

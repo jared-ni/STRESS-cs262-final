@@ -9,11 +9,14 @@ import sensor_pb2
 import sensor_pb2_grpc
 
 class WarningSensorClient:
-    def __init__(self, sensor_id, server_address='localhost:50051'):
+    def __init__(self, sensor_id, server_address='localhost:50052'):
         self.sensor_id = sensor_id
         self.channel = grpc.insecure_channel(server_address)
         self.server_stub = sensor_pb2_grpc.ServerStub(self.channel)
         self.device = serial.Serial("/dev/tty.usbmodem1101", 9600)
+
+        n = sensor_pb2.SensorConnectRequest(sensor_id=sensor_id,alarm=False)
+        reply = self.server_stub.SensorConnect(n)
 
     def send_message(self, sensor_id, alarm, message):
         request = sensor_pb2.SensorMessageRequest(id = sensor_id, alarm = alarm, message = message)
