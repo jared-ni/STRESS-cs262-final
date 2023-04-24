@@ -18,6 +18,8 @@ package grpc;
 // }
 
 service Server {
+  rpc Signup (SignupRequest) returns (SignupReply);
+  rpc Signout (SignoutRequest) returns (SignoutReply);
   rpc GetTrainStatus (TrainStatusRequest) returns (TrainStatusResponse) {}
   rpc UpdateTrainStatus (TrainUpdateRequest) returns (TrainUpdateResponse) {}
   rpc GetOtherTrainStatus (OtherTrainStatusRequest) returns (TrainStatusResponse) {}
@@ -25,6 +27,24 @@ service Server {
   // sensors
   rpc SendSensorMessage (SensorMessageRequest) returns (SensorResponse) {}
   rpc TrainSensorStream (TrainConnectRequest) returns (stream TrainConnectReply) {}
+}
+
+message SignoutRequest {
+  int32 train_id = 1;
+}
+
+message SignoutReply {
+  bool success = 1;
+  string error = 2;
+}
+
+message SignupRequest {
+  int32 train_id = 1;
+}
+
+message SignupReply {
+  bool success = 1;
+  string error = 2;
 }
 
 message TrainConnectRequest {

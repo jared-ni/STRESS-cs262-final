@@ -19,10 +19,152 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0csensor.proto\x12\x04grpc\"\'\n\x13TrainConnectRequest\x12\x10\n\x08train_id\x18\x01 \x01(\x05\"E\n\x11TrainConnectReply\x12\x10\n\x08train_id\x18\x01 \x01(\x05\x12\r\n\x05\x61larm\x18\x02 \x01(\x08\x12\x0f\n\x07message\x18\x03 \x01(\t\"B\n\x14SensorMessageRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\r\n\x05\x61larm\x18\x02 \x01(\x08\x12\x0f\n\x07message\x18\x03 \x01(\t\"D\n\x0eSensorResponse\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0f\n\x07success\x18\x02 \x01(\x08\x12\x15\n\rerror_message\x18\x03 \x01(\t\"N\n\x17OtherTrainStatusRequest\x12\x1b\n\x13requesting_train_id\x18\x01 \x01(\x05\x12\x16\n\x0eother_train_id\x18\x02 \x01(\x05\"&\n\x12TrainStatusRequest\x12\x10\n\x08train_id\x18\x01 \x01(\x05\"H\n\x13TrainStatusResponse\x12\x10\n\x08train_id\x18\x01 \x01(\x05\x12\x10\n\x08location\x18\x02 \x01(\x01\x12\r\n\x05speed\x18\x03 \x01(\x01\"G\n\x12TrainUpdateRequest\x12\x10\n\x08train_id\x18\x01 \x01(\x05\x12\x10\n\x08location\x18\x02 \x01(\x01\x12\r\n\x05speed\x18\x03 \x01(\x01\"&\n\x13TrainUpdateResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x32\x86\x03\n\x06Server\x12G\n\x0eGetTrainStatus\x12\x18.grpc.TrainStatusRequest\x1a\x19.grpc.TrainStatusResponse\"\x00\x12J\n\x11UpdateTrainStatus\x12\x18.grpc.TrainUpdateRequest\x1a\x19.grpc.TrainUpdateResponse\"\x00\x12Q\n\x13GetOtherTrainStatus\x12\x1d.grpc.OtherTrainStatusRequest\x1a\x19.grpc.TrainStatusResponse\"\x00\x12G\n\x11SendSensorMessage\x12\x1a.grpc.SensorMessageRequest\x1a\x14.grpc.SensorResponse\"\x00\x12K\n\x11TrainSensorStream\x12\x19.grpc.TrainConnectRequest\x1a\x17.grpc.TrainConnectReply\"\x00\x30\x01\x62\x06proto3'
+  serialized_pb=b'\n\x0csensor.proto\x12\x04grpc\"\"\n\x0eSignoutRequest\x12\x10\n\x08train_id\x18\x01 \x01(\x05\".\n\x0cSignoutReply\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\r\n\x05\x65rror\x18\x02 \x01(\t\"!\n\rSignupRequest\x12\x10\n\x08train_id\x18\x01 \x01(\x05\"-\n\x0bSignupReply\x12\x0f\n\x07success\x18\x01 \x01(\x08\x12\r\n\x05\x65rror\x18\x02 \x01(\t\"\'\n\x13TrainConnectRequest\x12\x10\n\x08train_id\x18\x01 \x01(\x05\"E\n\x11TrainConnectReply\x12\x10\n\x08train_id\x18\x01 \x01(\x05\x12\r\n\x05\x61larm\x18\x02 \x01(\x08\x12\x0f\n\x07message\x18\x03 \x01(\t\"B\n\x14SensorMessageRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\r\n\x05\x61larm\x18\x02 \x01(\x08\x12\x0f\n\x07message\x18\x03 \x01(\t\"D\n\x0eSensorResponse\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x0f\n\x07success\x18\x02 \x01(\x08\x12\x15\n\rerror_message\x18\x03 \x01(\t\"N\n\x17OtherTrainStatusRequest\x12\x1b\n\x13requesting_train_id\x18\x01 \x01(\x05\x12\x16\n\x0eother_train_id\x18\x02 \x01(\x05\"&\n\x12TrainStatusRequest\x12\x10\n\x08train_id\x18\x01 \x01(\x05\"H\n\x13TrainStatusResponse\x12\x10\n\x08train_id\x18\x01 \x01(\x05\x12\x10\n\x08location\x18\x02 \x01(\x01\x12\r\n\x05speed\x18\x03 \x01(\x01\"G\n\x12TrainUpdateRequest\x12\x10\n\x08train_id\x18\x01 \x01(\x05\x12\x10\n\x08location\x18\x02 \x01(\x01\x12\r\n\x05speed\x18\x03 \x01(\x01\"&\n\x13TrainUpdateResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x32\xed\x03\n\x06Server\x12\x30\n\x06Signup\x12\x13.grpc.SignupRequest\x1a\x11.grpc.SignupReply\x12\x33\n\x07Signout\x12\x14.grpc.SignoutRequest\x1a\x12.grpc.SignoutReply\x12G\n\x0eGetTrainStatus\x12\x18.grpc.TrainStatusRequest\x1a\x19.grpc.TrainStatusResponse\"\x00\x12J\n\x11UpdateTrainStatus\x12\x18.grpc.TrainUpdateRequest\x1a\x19.grpc.TrainUpdateResponse\"\x00\x12Q\n\x13GetOtherTrainStatus\x12\x1d.grpc.OtherTrainStatusRequest\x1a\x19.grpc.TrainStatusResponse\"\x00\x12G\n\x11SendSensorMessage\x12\x1a.grpc.SensorMessageRequest\x1a\x14.grpc.SensorResponse\"\x00\x12K\n\x11TrainSensorStream\x12\x19.grpc.TrainConnectRequest\x1a\x17.grpc.TrainConnectReply\"\x00\x30\x01\x62\x06proto3'
 )
 
 
+
+
+_SIGNOUTREQUEST = _descriptor.Descriptor(
+  name='SignoutRequest',
+  full_name='grpc.SignoutRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='train_id', full_name='grpc.SignoutRequest.train_id', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=22,
+  serialized_end=56,
+)
+
+
+_SIGNOUTREPLY = _descriptor.Descriptor(
+  name='SignoutReply',
+  full_name='grpc.SignoutReply',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='success', full_name='grpc.SignoutReply.success', index=0,
+      number=1, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='error', full_name='grpc.SignoutReply.error', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=58,
+  serialized_end=104,
+)
+
+
+_SIGNUPREQUEST = _descriptor.Descriptor(
+  name='SignupRequest',
+  full_name='grpc.SignupRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='train_id', full_name='grpc.SignupRequest.train_id', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=106,
+  serialized_end=139,
+)
+
+
+_SIGNUPREPLY = _descriptor.Descriptor(
+  name='SignupReply',
+  full_name='grpc.SignupReply',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='success', full_name='grpc.SignupReply.success', index=0,
+      number=1, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='error', full_name='grpc.SignupReply.error', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=141,
+  serialized_end=186,
+)
 
 
 _TRAINCONNECTREQUEST = _descriptor.Descriptor(
@@ -52,8 +194,8 @@ _TRAINCONNECTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=22,
-  serialized_end=61,
+  serialized_start=188,
+  serialized_end=227,
 )
 
 
@@ -98,8 +240,8 @@ _TRAINCONNECTREPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=63,
-  serialized_end=132,
+  serialized_start=229,
+  serialized_end=298,
 )
 
 
@@ -144,8 +286,8 @@ _SENSORMESSAGEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=134,
-  serialized_end=200,
+  serialized_start=300,
+  serialized_end=366,
 )
 
 
@@ -190,8 +332,8 @@ _SENSORRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=202,
-  serialized_end=270,
+  serialized_start=368,
+  serialized_end=436,
 )
 
 
@@ -229,8 +371,8 @@ _OTHERTRAINSTATUSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=272,
-  serialized_end=350,
+  serialized_start=438,
+  serialized_end=516,
 )
 
 
@@ -261,8 +403,8 @@ _TRAINSTATUSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=352,
-  serialized_end=390,
+  serialized_start=518,
+  serialized_end=556,
 )
 
 
@@ -307,8 +449,8 @@ _TRAINSTATUSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=392,
-  serialized_end=464,
+  serialized_start=558,
+  serialized_end=630,
 )
 
 
@@ -353,8 +495,8 @@ _TRAINUPDATEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=466,
-  serialized_end=537,
+  serialized_start=632,
+  serialized_end=703,
 )
 
 
@@ -385,10 +527,14 @@ _TRAINUPDATERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=539,
-  serialized_end=577,
+  serialized_start=705,
+  serialized_end=743,
 )
 
+DESCRIPTOR.message_types_by_name['SignoutRequest'] = _SIGNOUTREQUEST
+DESCRIPTOR.message_types_by_name['SignoutReply'] = _SIGNOUTREPLY
+DESCRIPTOR.message_types_by_name['SignupRequest'] = _SIGNUPREQUEST
+DESCRIPTOR.message_types_by_name['SignupReply'] = _SIGNUPREPLY
 DESCRIPTOR.message_types_by_name['TrainConnectRequest'] = _TRAINCONNECTREQUEST
 DESCRIPTOR.message_types_by_name['TrainConnectReply'] = _TRAINCONNECTREPLY
 DESCRIPTOR.message_types_by_name['SensorMessageRequest'] = _SENSORMESSAGEREQUEST
@@ -399,6 +545,34 @@ DESCRIPTOR.message_types_by_name['TrainStatusResponse'] = _TRAINSTATUSRESPONSE
 DESCRIPTOR.message_types_by_name['TrainUpdateRequest'] = _TRAINUPDATEREQUEST
 DESCRIPTOR.message_types_by_name['TrainUpdateResponse'] = _TRAINUPDATERESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
+
+SignoutRequest = _reflection.GeneratedProtocolMessageType('SignoutRequest', (_message.Message,), {
+  'DESCRIPTOR' : _SIGNOUTREQUEST,
+  '__module__' : 'sensor_pb2'
+  # @@protoc_insertion_point(class_scope:grpc.SignoutRequest)
+  })
+_sym_db.RegisterMessage(SignoutRequest)
+
+SignoutReply = _reflection.GeneratedProtocolMessageType('SignoutReply', (_message.Message,), {
+  'DESCRIPTOR' : _SIGNOUTREPLY,
+  '__module__' : 'sensor_pb2'
+  # @@protoc_insertion_point(class_scope:grpc.SignoutReply)
+  })
+_sym_db.RegisterMessage(SignoutReply)
+
+SignupRequest = _reflection.GeneratedProtocolMessageType('SignupRequest', (_message.Message,), {
+  'DESCRIPTOR' : _SIGNUPREQUEST,
+  '__module__' : 'sensor_pb2'
+  # @@protoc_insertion_point(class_scope:grpc.SignupRequest)
+  })
+_sym_db.RegisterMessage(SignupRequest)
+
+SignupReply = _reflection.GeneratedProtocolMessageType('SignupReply', (_message.Message,), {
+  'DESCRIPTOR' : _SIGNUPREPLY,
+  '__module__' : 'sensor_pb2'
+  # @@protoc_insertion_point(class_scope:grpc.SignupReply)
+  })
+_sym_db.RegisterMessage(SignupReply)
 
 TrainConnectRequest = _reflection.GeneratedProtocolMessageType('TrainConnectRequest', (_message.Message,), {
   'DESCRIPTOR' : _TRAINCONNECTREQUEST,
@@ -472,13 +646,33 @@ _SERVER = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=580,
-  serialized_end=970,
+  serialized_start=746,
+  serialized_end=1239,
   methods=[
+  _descriptor.MethodDescriptor(
+    name='Signup',
+    full_name='grpc.Server.Signup',
+    index=0,
+    containing_service=None,
+    input_type=_SIGNUPREQUEST,
+    output_type=_SIGNUPREPLY,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='Signout',
+    full_name='grpc.Server.Signout',
+    index=1,
+    containing_service=None,
+    input_type=_SIGNOUTREQUEST,
+    output_type=_SIGNOUTREPLY,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
   _descriptor.MethodDescriptor(
     name='GetTrainStatus',
     full_name='grpc.Server.GetTrainStatus',
-    index=0,
+    index=2,
     containing_service=None,
     input_type=_TRAINSTATUSREQUEST,
     output_type=_TRAINSTATUSRESPONSE,
@@ -488,7 +682,7 @@ _SERVER = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='UpdateTrainStatus',
     full_name='grpc.Server.UpdateTrainStatus',
-    index=1,
+    index=3,
     containing_service=None,
     input_type=_TRAINUPDATEREQUEST,
     output_type=_TRAINUPDATERESPONSE,
@@ -498,7 +692,7 @@ _SERVER = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='GetOtherTrainStatus',
     full_name='grpc.Server.GetOtherTrainStatus',
-    index=2,
+    index=4,
     containing_service=None,
     input_type=_OTHERTRAINSTATUSREQUEST,
     output_type=_TRAINSTATUSRESPONSE,
@@ -508,7 +702,7 @@ _SERVER = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='SendSensorMessage',
     full_name='grpc.Server.SendSensorMessage',
-    index=3,
+    index=5,
     containing_service=None,
     input_type=_SENSORMESSAGEREQUEST,
     output_type=_SENSORRESPONSE,
@@ -518,7 +712,7 @@ _SERVER = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='TrainSensorStream',
     full_name='grpc.Server.TrainSensorStream',
-    index=4,
+    index=6,
     containing_service=None,
     input_type=_TRAINCONNECTREQUEST,
     output_type=_TRAINCONNECTREPLY,
