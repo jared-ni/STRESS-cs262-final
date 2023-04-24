@@ -17,7 +17,7 @@ TRAIN_SPEED = 1
 UPDATE_RATE = 3
 
 class TrainClient:
-    def __init__(self, server_address=f'{socket.gethostbyname(socket.gethostname())}:50051'):
+    def __init__(self, server_address=f'{socket.gethostbyname(socket.gethostname())}:50052'):
         self.train_id = None
         self.location = STOP_POS
         self.speed = TRAIN_SPEED
