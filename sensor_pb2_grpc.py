@@ -29,6 +29,16 @@ class ServerStub(object):
         Args:
             channel: A grpc.Channel.
         """
+        self.Signup = channel.unary_unary(
+                '/grpc.Server/Signup',
+                request_serializer=sensor__pb2.SignupRequest.SerializeToString,
+                response_deserializer=sensor__pb2.SignupReply.FromString,
+                )
+        self.Signout = channel.unary_unary(
+                '/grpc.Server/Signout',
+                request_serializer=sensor__pb2.SignoutRequest.SerializeToString,
+                response_deserializer=sensor__pb2.SignoutReply.FromString,
+                )
         self.GetTrainStatus = channel.unary_unary(
                 '/grpc.Server/GetTrainStatus',
                 request_serializer=sensor__pb2.TrainStatusRequest.SerializeToString,
@@ -74,6 +84,18 @@ class ServerServicer(object):
 
     """
 
+    def Signup(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def Signout(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def GetTrainStatus(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -108,6 +130,16 @@ class ServerServicer(object):
 
 def add_ServerServicer_to_server(servicer, server):
     rpc_method_handlers = {
+            'Signup': grpc.unary_unary_rpc_method_handler(
+                    servicer.Signup,
+                    request_deserializer=sensor__pb2.SignupRequest.FromString,
+                    response_serializer=sensor__pb2.SignupReply.SerializeToString,
+            ),
+            'Signout': grpc.unary_unary_rpc_method_handler(
+                    servicer.Signout,
+                    request_deserializer=sensor__pb2.SignoutRequest.FromString,
+                    response_serializer=sensor__pb2.SignoutReply.SerializeToString,
+            ),
             'GetTrainStatus': grpc.unary_unary_rpc_method_handler(
                     servicer.GetTrainStatus,
                     request_deserializer=sensor__pb2.TrainStatusRequest.FromString,
@@ -157,6 +189,40 @@ class Server(object):
     }
 
     """
+
+    @staticmethod
+    def Signup(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/grpc.Server/Signup',
+            sensor__pb2.SignupRequest.SerializeToString,
+            sensor__pb2.SignupReply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def Signout(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/grpc.Server/Signout',
+            sensor__pb2.SignoutRequest.SerializeToString,
+            sensor__pb2.SignoutReply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def GetTrainStatus(request,
