@@ -28,6 +28,7 @@ class WarningSensorClient:
         while True:
             time.sleep(1)
             pir = int(self.device.readline().decode('utf-8').rstrip())
+            print(pir)
             if pir == 1 and not reading:
                 reading = True
                 self.send_message(self.sensor_id, True, "WARNING")
