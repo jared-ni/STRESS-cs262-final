@@ -57,7 +57,7 @@ class TrainClient:
                 self.train_id = train_id
             return reply
         
-    def signout(self):
+    def signout(self, train_id):
         n = sensor_pb2.SignoutRequest(train_id=train_id)
         reply = self.conn.Signout(n)
         if reply.success:
