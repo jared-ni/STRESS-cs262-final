@@ -11,7 +11,7 @@ import socket
 
 class WarningSensorClient:
     def __init__(self, sensor_id, 
-                 server_address=f'{socket.gethostbyname(socket.gethostname())}:50052'):
+                 server_address=f'{socket.gethostbyname(socket.gethostname())}:50052', testing=False):
         server_ip = input("Are you running server on localhost? (y/n) ")
         while True:
             if server_ip == "y":
@@ -24,10 +24,14 @@ class WarningSensorClient:
                 server_ip = input("Are you running server on localhost? (y/n)")
 
         print(f'Connecting to server at {server_address}...')
+        self.testing = testing
         self.sensor_id = sensor_id
         self.channel = grpc.insecure_channel(server_address)
         self.server_stub = sensor_pb2_grpc.ServerStub(self.channel)
-        self.device = serial.Serial("/dev/tty.usbmodem1101", 9600)
+        if not testing:
+            self.device = serial.Serial("/dev/tty.usbmodem2101", 9600)
+        else:
+            self.device = open("warning_test_data.txt", "rb")
 
         n = sensor_pb2.SensorConnectRequest(sensor_id=sensor_id,alarm=False)
         reply = self.server_stub.SensorConnect(n)
@@ -54,7 +58,8 @@ class WarningSensorClient:
             elif pir == 0 and reading:
                 reading = False
                 
-                # break
+            if self.testing:
+                break
             
 
 if __name__ == '__main__':

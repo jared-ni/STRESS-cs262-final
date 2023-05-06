@@ -152,6 +152,7 @@ def serve():
     server.add_insecure_port(f'{local_ip}:50052')
     server.start()
     print('Server API started...')
+    server.wait_for_termination()
     
     try:
         while True:

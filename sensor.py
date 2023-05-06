@@ -1,6 +1,6 @@
 import serial
 
-devices = [serial.Serial("/dev/tty.usbmodem101", 9600)]
+devices = [serial.Serial("/dev/tty.usbmodem2101", 9600)]
  
 while True:
     for device in devices:
