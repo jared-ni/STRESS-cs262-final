@@ -24,7 +24,6 @@ class WarningSensorClient:
                 server_ip = input("Are you running server on localhost? (y/n)")
 
         print(f'Connecting to server at {server_address}...')
-        
         self.sensor_id = sensor_id
         self.channel = grpc.insecure_channel(server_address)
         self.server_stub = sensor_pb2_grpc.ServerStub(self.channel)

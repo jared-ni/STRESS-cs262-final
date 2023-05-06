@@ -10,6 +10,20 @@ import sensor_pb2_grpc
 
 class AlarmSensorClient:
     def __init__(self, sensor_id, server_address=f'{socket.gethostbyname(socket.gethostname())}:50052'):
+
+        server_ip = input("Are you running server on localhost? (y/n) ")
+        while True:
+            if server_ip == "y":
+                break
+            elif server_ip == "n":
+                ip_addr = input("Enter server ip address: ")
+                server_address = ip_addr + ":50052"
+                break
+            else:
+                server_ip = input("Are you running server on localhost? (y/n)")
+
+        print(f'Connecting to server at {server_address}...')
+
         self.sensor_id = sensor_id
         self.channel = grpc.insecure_channel(server_address)
         self.server_stub = sensor_pb2_grpc.ServerStub(self.channel)
@@ -35,7 +49,9 @@ class AlarmSensorClient:
             if pir == 1 and ultrasonic <= 100 and not reading:
                 reading = True
                 self.send_message(self.sensor_id, True, "FIRE THE ALARMS") 
-                playsound('alarm.m4a')
+                my_thread = threading.Thread(target=playsound, args = ('alarm.m4a',))
+                my_thread.start()
+
             elif int(pir) == 0 and reading:
                 reading = False
                 # n = sensor_pb2.ResetSensorRequest()
