@@ -15,6 +15,10 @@ If successful, you'll see a `Server API started...` This will allow the server t
 
 Run `python3 -m train_client.py` in base directory. Follow instructions to enter a train ID of 1, 2, or 3; if a duplicate ID is entered, you can re-enter another ID number. If successful, trains will wait for all other trains to be at a safe minimum distance away to instantiate at the train stop. 
 
+### Connecting Sensor Client
+
+First, prepare or construct an Arduino client according to the circuit diagram in the paper. Then, install Arduino IDE, and upload the file ./arduino_sensors/PIR_and_ultrasonic/PIR_and_ultrasonic.ino. 
+
 ### For Warning Sensor Client:
 
 Run `python3 -m client_warning_sensors.py` in base directory.
