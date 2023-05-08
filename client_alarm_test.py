@@ -28,7 +28,7 @@ class TestWarningSensorClient(unittest.TestCase):
         server_thread = threading.Thread(target=server.serve, daemon=True)
         server_thread.start()
 
-        mock_input.side_effect = ["2056", "y"]
+        mock_input.side_effect = ["2056"]
 
         alarm_client = client_alarm_sensors.AlarmSensorClient(1, testing=True)
         # nothing happens

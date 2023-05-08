@@ -8,29 +8,16 @@ import socket
 import sensor_pb2
 import sensor_pb2_grpc
 
-gary = "10.250.145.248"
-jessica = "10.250.135.58"
-gary = socket.gethostbyname(socket.gethostname())
-jessica = socket.gethostbyname(socket.gethostname())
+
+local = socket.gethostbyname(socket.gethostname())
 servers = {
-    2056: jessica, #jessica
-    3056: gary,
-    4056: jessica
+    2056: local, #jessica
+    3056: local,
+    4056: local
 }
 
 class AlarmSensorClient:
     def __init__(self, sensor_id, server_address=f'{socket.gethostbyname(socket.gethostname())}:50052', testing=False):
-
-        server_ip = input("Are you running server on localhost? (y/n) ")
-        while True:
-            if server_ip == "y":
-                break
-            elif server_ip == "n":
-                ip_addr = input("Enter server ip address: ")
-                server_address = ip_addr + ":50052"
-                break
-            else:
-                server_ip = input("Are you running server on localhost? (y/n)")
 
         self.testing = testing
         self.sensor_id = sensor_id
@@ -66,8 +53,6 @@ class AlarmSensorClient:
             print("Error: no connection found.")
         if self.master is None: # no master found
             print("Error: no master found.")
-
-        
 
 
     def send_message(self, sensor_id, alarm, message):
