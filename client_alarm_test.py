@@ -24,11 +24,12 @@ class TestWarningSensorClient(unittest.TestCase):
             f.write("1|189\n".encode("utf-8"))
             f.write("1|30\n".encode("utf-8"))
         
+
         server_thread = threading.Thread(target=server.serve, daemon=True)
         server_thread.start()
 
-        time.sleep(2)
-        mock_input.side_effect = ["y"]
+        mock_input.side_effect = ["2056"]
+
         alarm_client = client_alarm_sensors.AlarmSensorClient(1, testing=True)
         # nothing happens
         alarm_client.run()

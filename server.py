@@ -17,12 +17,11 @@ TRAIN_SPEED = 1
 UPDATE_RATE = 3
 
 
-gary = socket.gethostbyname(socket.gethostname())
-jessica = socket.gethostbyname(socket.gethostname())
+local = socket.gethostbyname(socket.gethostname())
 ports = {
-    2056: jessica, 
-    3056: gary,
-    4056: jessica
+    2056: local, 
+    3056: local,
+    4056: local
 }
 
 class Server(sensor_pb2_grpc.ServerServicer):

@@ -27,7 +27,7 @@ class TestWarningSensorClient(unittest.TestCase):
         server_thread.start()
 
         time.sleep(2)
-        mock_input.side_effect = ["y"]
+        mock_input.side_effect = ["2056"]
         warning_client = client_warning_sensors.WarningSensorClient(1, testing=True)
         # nothing happens
         warning_client.run()

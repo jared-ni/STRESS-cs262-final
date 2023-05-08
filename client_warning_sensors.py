@@ -10,42 +10,21 @@ import sensor_pb2_grpc
 import socket
 
 
-gary = socket.gethostbyname(socket.gethostname())
-jessica = socket.gethostbyname(socket.gethostname())
+local = socket.gethostbyname(socket.gethostname())
 servers = {
-    2056: jessica, #jessica
-    3056: gary,
-    4056: jessica
+    2056: local, #jessica
+    3056: local,
+    4056: local
 }
 class WarningSensorClient:
     def __init__(self, sensor_id, 
                  server_address=f'{socket.gethostbyname(socket.gethostname())}:50052', testing=False):
-        # server_ip = input("Are you running server on localhost? (y/n) ")
-        # while True:
-        #     if server_ip == "y":
-        #         break
-        #     elif server_ip == "n":
-        #         ip_addr = input("Enter server ip address: ")
-        #         server_address = ip_addr + ":50052"
-        #         break
-        #     else:
-        #         server_ip = input("Are you running server on localhost? (y/n)")
 
-        # print(f'Connecting to server at {server_address}...')
         self.testing = testing
         self.sensor_id = sensor_id
-        # self.channel = grpc.insecure_channel(server_address)
-        # self.server_stub = sensor_pb2_grpc.ServerStub(self.channel)
-        # if not testing:
-        #     self.device = serial.Serial("/dev/tty.usbmodem2101", 9600)
-        # else:
-        #     self.device = open("warning_test_data.txt", "rb")
-
-        # n = sensor_pb2.SensorConnectRequest(sensor_id=sensor_id,alarm=False)
-        # reply = self.server_stub.SensorConnect(n)
 
         self.channel = None
-        self.server_stub = None # self.conn
+        self.conn = None # self.conn
         self.master = None
 
         # connect to each port to find master server 
@@ -53,7 +32,7 @@ class WarningSensorClient:
             self.channel = grpc.insecure_channel(servers[port] + ':' + str(port))
             if self.test_server_activity(self.channel):
                 print("Server at port {} is active".format(port))
-                self.server_stub = sensor_pb2_grpc.ServerStub(self.channel) # add connection
+                self.conn = sensor_pb2_grpc.ServerStub(self.channel) # add connection
                 reply = self.is_master_query(port)
                 if reply.master: # connection is master
                     self.master = port
@@ -63,15 +42,15 @@ class WarningSensorClient:
                     if not testing:
                         self.device = serial.Serial("/dev/tty.usbmodem1101", 9600)
                     else:
-                        self.device = open("alarm_test_data.txt", "rb")
+                        self.device = open("warning_test_data.txt", "rb")
 
                     n = sensor_pb2.SensorConnectRequest(sensor_id=sensor_id, alarm=False)
-                    reply = self.server_stub.SensorConnect(n)
+                    reply = self.conn.SensorConnect(n)
                     break
                 else: 
-                    self.server_stub = None # break connection
+                    self.conn = None # break connection
                     self.channel = None
-        if self.server_stub is None:
+        if self.conn is None:
             print("Error: no connection found.")
         if self.master is None: # no master found
             print("Error: no master found.")
@@ -79,7 +58,7 @@ class WarningSensorClient:
 
     def send_message(self, sensor_id, alarm, message):
         request = sensor_pb2.SensorMessageRequest(id = sensor_id, alarm = alarm, message = message)
-        response = self.server_stub.SendSensorMessage(request)
+        response = self.conn.SendSensorMessage(request)
         return response
 
 
@@ -121,7 +100,7 @@ class WarningSensorClient:
         failed_port = self.master
         self.channel = None 
         self.master = None 
-        self.server_stub = None
+        self.conn = None
 
         for port in list(servers.keys()):
             if port != failed_port: # not the one that just disconnected
@@ -138,7 +117,7 @@ class WarningSensorClient:
                         self.device = open("alarm_test_data.txt", "rb")
 
                         n = sensor_pb2.SensorConnectRequest(sensor_id=self.sensor_id, alarm=True)
-                        reply = self.server_stub.SensorConnect(n)
+                        reply = self.conn.SensorConnect(n)
                         break
                     else: 
                         self.conn = None # break connection
