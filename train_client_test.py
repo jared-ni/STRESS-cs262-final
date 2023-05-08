@@ -18,9 +18,6 @@ class TestTrainClient(unittest.TestCase):
     @mock.patch('train_client.input', create=True)
     def test_signup(self, mock_input):     
         mock_input.side_effect = ["2056"]  
-        # server_thread = threading.Thread(target=server.serve, daemon=True)
-        # server_thread.start()
-       
         self.train_client_test = train_client.TrainClient()
         self.train_client_test.train_id = 3
 
@@ -34,8 +31,6 @@ class TestTrainClient(unittest.TestCase):
     @mock.patch('train_client.input', create=True)
     def test_update_and_get_status(self, mock_input):
 
-        # server_thread = threading.Thread(target=server.serve, daemon=True)
-        # server_thread.start()
         time.sleep(2)
         mock_input.side_effect = ["2056"]
     
@@ -44,9 +39,6 @@ class TestTrainClient(unittest.TestCase):
         self.train_client_test.train_id = 1
 
         reply = self.train_client_test.signup(self.train_client_test.train_id)
-        # self.train_client_test.thread()    
-        # while not self.train_client_test.is_safe_to_instantiate():
-        #     time.sleep(1)
         train_status = self.train_client_test.update_status()
         self.assertEqual(train_status, True)
         train_status = self.train_client_test.get_status()
@@ -55,8 +47,6 @@ class TestTrainClient(unittest.TestCase):
     @mock.patch('train_client.input', create=True)
     def test_get_other_train_status(self, mock_input):
 
-        # server_thread = threading.Thread(target=server.serve, daemon=True)
-        # server_thread.start()
         time.sleep(2)
         mock_input.side_effect = ["2056"]
 
@@ -64,8 +54,7 @@ class TestTrainClient(unittest.TestCase):
         self.train_client_test = train_client.TrainClient()
         self.train_client_test.train_id = 1
 
-        reply = self.train_client_test.signup(self.train_client_test.train_id)
-        # self.train_client_test.thread()    
+        reply = self.train_client_test.signup(self.train_client_test.train_id)  
 
         # get_other_train_status is called by and is only used for is_safe_to_instantiate
         status = self.train_client_test.is_safe_to_instantiate()
