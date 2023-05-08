@@ -23,10 +23,9 @@ class TestWarningSensorClient(unittest.TestCase):
             f.write("1\n".encode("utf-8"))
             f.write("1\n".encode("utf-8"))
         
-        server_thread = threading.Thread(target=server.serve, daemon=True)
+        server_thread = threading.Thread(target=server.serve, daemon=False)
         server_thread.start()
 
-        time.sleep(2)
         mock_input.side_effect = ["2056"]
         warning_client = client_warning_sensors.WarningSensorClient(1, testing=True)
         # nothing happens
@@ -46,4 +45,4 @@ class TestWarningSensorClient(unittest.TestCase):
 if __name__ == '__main__':
     unittest.main()
 
-    sys.exit()
+    # sys.exit()
