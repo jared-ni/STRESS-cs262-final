@@ -16,13 +16,45 @@ STOP_POS = 30
 TRAIN_SPEED = 1
 UPDATE_RATE = 3
 
+gary = "10.250.145.248"
+jessica = "10.250.135.58"
+servers = {
+    2056: jessica, #jessica
+    3056: gary,
+    4056: jessica
+}
+
 class TrainClient:
     def __init__(self, server_address=f'{socket.gethostbyname(socket.gethostname())}:50052'):
         self.train_id = None
         self.location = STOP_POS
         self.speed = TRAIN_SPEED
-        self.channel = grpc.insecure_channel(server_address)
-        self.conn = rpc.ServerStub(self.channel)
+        # self.channel = grpc.insecure_channel(server_address)
+        # self.conn = rpc.ServerStub(self.channel)
+
+        # new
+        self.master = None
+        self.channel = None
+        self.conn = None
+
+        # connect to each port to find master server 
+        for port in list(servers.keys()):
+            self.channel = grpc.insecure_channel(servers[port] + ':' + str(port))
+            if self.test_server_activity(self.channel):
+                print("Server at port {} is active".format(port))
+                self.conn = rpc.ChatServerStub(self.channel) # add connection
+                reply = self.is_master_query(port)
+                if reply.master: # connection is master
+                    self.master = port
+                    print("Master found at port {}".format(port))
+                    break
+                else: 
+                    self.conn = None # break connection
+                    self.channel = None
+        if self.conn is None:
+            print("Error: no connection found.")
+        if self.master is None: # no master found
+            print("Error: no master found.")
 
     def thread(self):
         if self.train_id is not None:
@@ -30,24 +62,75 @@ class TrainClient:
             self.listener_thread = threading.Thread(target=self.__listen_for_alarms, daemon=True).start()
             self.run_thread = threading.Thread(target=self.run)
             self.run_thread.start()
+
+            # new
+            print("Thread started: listening for messages from", str(self.master))
             # self.run_thread.join()
     
     def __listen_for_alarms(self):
-        if self.train_id is not None:
-            n = sensor_pb2.TrainConnectRequest()
-            n.train_id = self.train_id
-            # continuously  wait for new messages from the server!
-            for connectReply in self.conn.TrainSensorStream(n):  
-                # if alarm, not reset
-                if connectReply.alarm:
-                    # display alarm message
-                    print("From server: {}".format(connectReply.message)) 
-                    # stop the train 
-                    self.speed = connectReply.new_speed
-                    self.update_status()
-                else:
-                    print("From server: Restart trains at speed {}".format(connectReply.message)) 
-                    self.speed = int(connectReply.message)
+        try: 
+            if self.train_id is not None:
+                n = sensor_pb2.TrainConnectRequest()
+                n.train_id = self.train_id
+                # continuously  wait for new messages from the server!
+                for connectReply in self.conn.TrainSensorStream(n):  
+                    # if alarm, not reset
+                    if connectReply.alarm:
+                        # display alarm message
+                        print("From server: {}".format(connectReply.message)) 
+                        # stop the train 
+                        self.speed = connectReply.new_speed
+                        self.update_status()
+                    else:
+                        print("From server: Restart trains at speed {}".format(connectReply.message)) 
+                        self.speed = int(connectReply.message)
+        except:
+            # new 
+            time.sleep(1) # servers need time to figure out who is master
+            self.reconnect_server()
+
+    # new
+    def test_server_activity(self,channel): # test if a given server is active
+        TIMEOUT_SEC = random.randint(1,3) # each server can timeout differently
+        try: 
+            grpc.channel_ready_future(channel).result(timeout=TIMEOUT_SEC) 
+            return True 
+        except grpc.FutureTimeoutError: 
+            return False
+        
+    def is_master_query(self,port):
+        n = sensor_pb2.IsMasterRequest()
+        reply = self.conn.IsMasterQuery(n)
+        return reply 
+    
+    def reconnect_server(self):
+        # given disconnected server, connect to another master
+        print("Reconnecting server")
+        failed_port = self.master
+        self.channel = None 
+        self.master = None 
+        self.conn = None
+
+        for port in list(servers.keys()):
+            if port != failed_port: # not the one that just disconnected
+                self.channel = grpc.insecure_channel(servers[port] + ':' + str(port))
+                if self.test_server_activity(self.channel):
+                    print("Server at port {} is active".format(port))
+                    self.conn = rpc.ChatServerStub(self.channel) # add connection
+                    reply = self.is_master_query(port)
+                    if reply.master: # connection is master
+                        self.master = port
+                        self.thread() # starts listening
+                        print("Master found at port {}".format(port))
+                        break
+                    else: 
+                        self.conn = None # break connection
+                        self.channel = None
+        if self.conn is None:
+            print("Error: no connection found.")
+        if self.master is None: # no master found
+            print("Error: no master found.")
+
 
     def signup(self, train_id):
         if train_id != '':
@@ -151,17 +234,24 @@ if __name__ == '__main__':
     c = TrainClient()
 
     try:        
-        while c.train_id is None:
-            train_id = int(input("Enter train ID (1, 2, or 3) to instantiate a train or 0 to exit: "))
-            if train_id in [1,2,3]:
-                reply = c.signup(train_id)
-                if reply.success:
-                    print("Valid train ID!")
-                else:
-                    print("{}".format(reply.error))
-            else:
-                print("Invalid train ID. Please enter 1, 2, or 3.")
-            c.thread()
+        while True:
+            try:
+                while c.train_id is None:
+                    train_id = int(input("Enter train ID (1, 2, or 3) to instantiate a train or 0 to exit: "))
+                    if train_id in [1,2,3]:
+                        reply = c.signup(train_id)
+                        if reply.success:
+                            print("Valid train ID!")
+                        else:
+                            print("{}".format(reply.error))
+                    else:
+                        print("Invalid train ID. Please enter 1, 2, or 3.")
+                    c.thread()
+            # new
+            except:
+                c.channel.close() # important
+                time.sleep(1) # servers need time to figure out who is master
+                c.reconnect_server()
     except KeyboardInterrupt: # catch the ctrl+c keyboard interrupt
         if c.train_id is not None:
             temp = c.signout()
