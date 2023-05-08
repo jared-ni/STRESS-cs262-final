@@ -39,9 +39,7 @@ class TrainClient:
         self.conn = None
 
         # connect to each port to find master server 
-        print(servers)
         for port in list(servers.keys()):
-            print(port)
             self.channel = grpc.insecure_channel(servers[port] + ':' + str(port))
             if self.test_server_activity(self.channel):
                 print("Server at port {} is active".format(port))
@@ -145,8 +143,8 @@ class TrainClient:
                 self.train_id = train_id
             return reply
         
-    def signout(self, train_id):
-        n = sensor_pb2.SignoutRequest(train_id=train_id)
+    def signout(self):
+        n = sensor_pb2.SignoutRequest(train_id=self.train_id)
         reply = self.conn.Signout(n)
         if reply.success:
             self.train_id = None

@@ -80,7 +80,6 @@ class Server(sensor_pb2_grpc.ServerServicer):
         return n
     
     def connect(self):
-        print("in connect")
         for i in list(ports.keys()): 
             if i != self.port:  # all other possible servers except self
                 self.channels[i] = grpc.insecure_channel(ports[i] + ':' + str(i))
