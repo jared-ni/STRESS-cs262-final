@@ -10,6 +10,8 @@ import sensor_pb2_grpc
 
 gary = "10.250.145.248"
 jessica = "10.250.135.58"
+gary = socket.gethostbyname(socket.gethostname())
+jessica = socket.gethostbyname(socket.gethostname())
 servers = {
     2056: jessica, #jessica
     3056: gary,
@@ -134,7 +136,7 @@ class AlarmSensorClient:
                 self.channel = grpc.insecure_channel(servers[port] + ':' + str(port))
                 if self.test_server_activity(self.channel):
                     print("Server at port {} is active".format(port))
-                    self.conn = sensor_pb2_grpc.ChatServerStub(self.channel) # add connection
+                    self.conn = sensor_pb2_grpc.ServerStub(self.channel) # add connection
                     reply = self.is_master_query(port)
                     if reply.master: # connection is master
                         self.master = port

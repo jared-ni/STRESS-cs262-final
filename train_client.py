@@ -16,8 +16,9 @@ STOP_POS = 30
 TRAIN_SPEED = 1
 UPDATE_RATE = 3
 
-gary = "10.250.145.248"
-jessica = "10.250.135.58"
+
+gary = socket.gethostbyname(socket.gethostname())
+jessica = socket.gethostbyname(socket.gethostname())
 servers = {
     2056: jessica, #jessica
     3056: gary,
@@ -38,11 +39,13 @@ class TrainClient:
         self.conn = None
 
         # connect to each port to find master server 
+        print(servers)
         for port in list(servers.keys()):
+            print(port)
             self.channel = grpc.insecure_channel(servers[port] + ':' + str(port))
             if self.test_server_activity(self.channel):
                 print("Server at port {} is active".format(port))
-                self.conn = rpc.ChatServerStub(self.channel) # add connection
+                self.conn = rpc.ServerStub(self.channel) # add connection
                 reply = self.is_master_query(port)
                 if reply.master: # connection is master
                     self.master = port
@@ -91,6 +94,7 @@ class TrainClient:
 
     # new
     def test_server_activity(self,channel): # test if a given server is active
+        print("in test")
         TIMEOUT_SEC = random.randint(1,3) # each server can timeout differently
         try: 
             grpc.channel_ready_future(channel).result(timeout=TIMEOUT_SEC) 
@@ -101,6 +105,7 @@ class TrainClient:
     def is_master_query(self,port):
         n = sensor_pb2.IsMasterRequest()
         reply = self.conn.IsMasterQuery(n)
+        print(reply.master)
         return reply 
     
     def reconnect_server(self):
@@ -116,7 +121,7 @@ class TrainClient:
                 self.channel = grpc.insecure_channel(servers[port] + ':' + str(port))
                 if self.test_server_activity(self.channel):
                     print("Server at port {} is active".format(port))
-                    self.conn = rpc.ChatServerStub(self.channel) # add connection
+                    self.conn = rpc.ServerStub(self.channel) # add connection
                     reply = self.is_master_query(port)
                     if reply.master: # connection is master
                         self.master = port

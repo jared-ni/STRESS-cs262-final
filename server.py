@@ -16,8 +16,9 @@ STOP_POS = 30
 TRAIN_SPEED = 1
 UPDATE_RATE = 3
 
-gary = "10.250.145.248"
-jessica = "10.250.135.58"
+
+gary = socket.gethostbyname(socket.gethostname())
+jessica = socket.gethostbyname(socket.gethostname())
 ports = {
     2056: jessica, 
     3056: gary,
@@ -35,6 +36,8 @@ class Server(sensor_pb2_grpc.ServerServicer):
         self.master = None
         self.conns = {} # dict of all connections to other servers, key (port) -> value (connection)
         self.channels = {}
+
+        self.connect()
 
     # new 
     def is_master_query(self,port):
@@ -69,7 +72,7 @@ class Server(sensor_pb2_grpc.ServerServicer):
         port = request.requester_port
         print("Receive connect request from {}".format(port))
         self.channels[port] = grpc.insecure_channel(ports[port] + ':' + str(port))
-        self.conns[port] = sensor_pb2_grpc.ChatServerStub(self.channels[port])
+        self.conns[port] = sensor_pb2_grpc.ServerStub(self.channels[port])
         print("Connection successful")
         n = sensor_pb2.AddConnectReply()
         n.success = True
@@ -77,12 +80,13 @@ class Server(sensor_pb2_grpc.ServerServicer):
         return n
     
     def connect(self):
+        print("in connect")
         for i in list(ports.keys()): 
             if i != self.port:  # all other possible servers except self
                 self.channels[i] = grpc.insecure_channel(ports[i] + ':' + str(i))
                 if self.test_server_activity(self.channels[i]): # check if active
                     print("Port {} is active".format(i))
-                    self.conns[i] = sensor_pb2_grpc.ChatServerStub(self.channels[i]) # add connection
+                    self.conns[i] = sensor_pb2_grpc.ServerStub(self.channels[i]) # add connection
                     self.add_connect(i)
                 else: # delete inactive channel from dict
                     del self.channels[i]
@@ -289,7 +293,7 @@ def serve():
     try: 
         sensor_pb2_grpc.add_ServerServicer_to_server(train_server, server)
         local_ip = socket.gethostbyname(socket.gethostname())
-        server.add_insecure_port(f'{local_ip}:50052')
+        server.add_insecure_port(f'{local_ip}:{port}')
         server.start()
         print('Server API started...')
         server.wait_for_termination()
