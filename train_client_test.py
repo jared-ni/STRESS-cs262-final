@@ -16,12 +16,15 @@ import sys
 class TestTrainClient(unittest.TestCase):
 
     @mock.patch('train_client.input', create=True)
-    def test_signup(self, mock_input):       
+    def test_signup(self, mock_input):     
+        mock_input.side_effect = ["2056"]  
         server_thread = threading.Thread(target=server.serve, daemon=True)
         server_thread.start()
-        time.sleep(2)
+       
         self.train_client_test = train_client.TrainClient()
         self.train_client_test.train_id = 3
+
+        time.sleep(5)
 
         reply = self.train_client_test.signup(self.train_client_test.train_id)
         self.train_client_test.thread()
@@ -33,8 +36,9 @@ class TestTrainClient(unittest.TestCase):
 
         server_thread = threading.Thread(target=server.serve, daemon=True)
         server_thread.start()
-
         time.sleep(2)
+        mock_input.side_effect = ["2056"]
+    
 
         self.train_client_test = train_client.TrainClient()
         self.train_client_test.train_id = 1
@@ -53,9 +57,10 @@ class TestTrainClient(unittest.TestCase):
 
         server_thread = threading.Thread(target=server.serve, daemon=True)
         server_thread.start()
-
         time.sleep(2)
+        mock_input.side_effect = ["2056"]
 
+    
         self.train_client_test = train_client.TrainClient()
         self.train_client_test.train_id = 1
 
