@@ -74,6 +74,21 @@ class ServerStub(object):
                 request_serializer=sensor__pb2.SensorConnectRequest.SerializeToString,
                 response_deserializer=sensor__pb2.SensorConnectResponse.FromString,
                 )
+        self.IsMasterQuery = channel.unary_unary(
+                '/grpc.Server/IsMasterQuery',
+                request_serializer=sensor__pb2.IsMasterRequest.SerializeToString,
+                response_deserializer=sensor__pb2.IsMasterReply.FromString,
+                )
+        self.AddConnect = channel.unary_unary(
+                '/grpc.Server/AddConnect',
+                request_serializer=sensor__pb2.AddConnectRequest.SerializeToString,
+                response_deserializer=sensor__pb2.AddConnectReply.FromString,
+                )
+        self.Disconnect = channel.unary_unary(
+                '/grpc.Server/Disconnect',
+                request_serializer=sensor__pb2.DisconnectRequest.SerializeToString,
+                response_deserializer=sensor__pb2.DisconnectReply.FromString,
+                )
 
 
 class ServerServicer(object):
@@ -149,6 +164,25 @@ class ServerServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def IsMasterQuery(self, request, context):
+        """replication edit
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def AddConnect(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def Disconnect(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_ServerServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -196,6 +230,21 @@ def add_ServerServicer_to_server(servicer, server):
                     servicer.SensorConnect,
                     request_deserializer=sensor__pb2.SensorConnectRequest.FromString,
                     response_serializer=sensor__pb2.SensorConnectResponse.SerializeToString,
+            ),
+            'IsMasterQuery': grpc.unary_unary_rpc_method_handler(
+                    servicer.IsMasterQuery,
+                    request_deserializer=sensor__pb2.IsMasterRequest.FromString,
+                    response_serializer=sensor__pb2.IsMasterReply.SerializeToString,
+            ),
+            'AddConnect': grpc.unary_unary_rpc_method_handler(
+                    servicer.AddConnect,
+                    request_deserializer=sensor__pb2.AddConnectRequest.FromString,
+                    response_serializer=sensor__pb2.AddConnectReply.SerializeToString,
+            ),
+            'Disconnect': grpc.unary_unary_rpc_method_handler(
+                    servicer.Disconnect,
+                    request_deserializer=sensor__pb2.DisconnectRequest.FromString,
+                    response_serializer=sensor__pb2.DisconnectReply.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -372,5 +421,56 @@ class Server(object):
         return grpc.experimental.unary_unary(request, target, '/grpc.Server/SensorConnect',
             sensor__pb2.SensorConnectRequest.SerializeToString,
             sensor__pb2.SensorConnectResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def IsMasterQuery(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/grpc.Server/IsMasterQuery',
+            sensor__pb2.IsMasterRequest.SerializeToString,
+            sensor__pb2.IsMasterReply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def AddConnect(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/grpc.Server/AddConnect',
+            sensor__pb2.AddConnectRequest.SerializeToString,
+            sensor__pb2.AddConnectReply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def Disconnect(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/grpc.Server/Disconnect',
+            sensor__pb2.DisconnectRequest.SerializeToString,
+            sensor__pb2.DisconnectReply.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

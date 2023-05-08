@@ -30,6 +30,37 @@ service Server {
   rpc ResetSensor (ResetSensorRequest) returns (ResetSensorResponse) {}
   rpc SensorConnect (SensorConnectRequest) returns (SensorConnectResponse) {}
   // rpc RestartTrain (RestartTrainRequest) returns (RestartTrainResponse) {}
+
+  // replication edit
+  rpc IsMasterQuery (IsMasterRequest) returns (IsMasterReply);
+  rpc AddConnect (AddConnectRequest) returns (AddConnectReply);
+  rpc Disconnect (DisconnectRequest) returns (DisconnectReply);
+}
+
+message DisconnectRequest{
+  int32 requester_port = 1;
+  int32 replier_port = 2;
+  bool is_master = 3;
+}
+
+message DisconnectReply{
+  bool success = 1;
+  string error = 2;
+}
+message AddConnectRequest{
+  int32 requester_port = 1;
+  int32 replier_port = 2;
+}
+
+message AddConnectReply{
+  bool success = 1;
+  string error = 2;
+}
+
+message IsMasterRequest{}
+
+message IsMasterReply{
+  bool master = 1;
 }
 
 message SensorConnectRequest {
