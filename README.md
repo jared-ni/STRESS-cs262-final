@@ -1,4 +1,4 @@
-# Stational T-stop Railing Emergency Sirening System
+# Stationary T-stop Railing Emergency Sirening System
 Jessica Chen, Bryan Han, Jared Ni, Gary Wu
 
 ## Software Usage and Setup:
